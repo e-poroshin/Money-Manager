@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/itemOperationImageViewIcon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginBottom="13dp"
+            tools:background="@drawable/group_26" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/itemOperationTextViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryText"
+                android:textSize="14sp"
+                tools:text="This is tools text" />
+
+            <TextView
+                android:id="@+id/itemOperationTextViewAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                tools:text="Text" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="right">
+
+        <TextView
+            android:id="@+id/itemOperationTextViewSum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/primaryText"
+            android:textSize="14sp"
+            android:layout_marginRight="3dp"
+            android:layout_marginLeft="8dp"
+            tools:text="2320.00" />
+
+        <TextView
+            android:id="@+id/itemOperationTextViewCurrency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/primaryText"
+            android:textSize="14sp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="3dp"
+            tools:text="BYN" />
+
+    </LinearLayout>
+
+</LinearLayout>

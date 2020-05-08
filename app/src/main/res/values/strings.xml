@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Money Manager</string>
+    <string name="welcome_ru">Добро пожаловать!</string>
+    <string name="welcomeDescription_ru">Вы только что сделали первый шаг, чтобы привести в порядок вашу финансовую сферу. "\n" Давайте начнем!</string>
+    <string name="backPressed">Press once again to exit</string>
+    <string name="operations">Operations</string>
+    <string name="accounts">Accounts</string>
+    <string name="categories">Categories</string>
+    <string name="statistics">Statistics</string>
+    <string name="operations_ru">Операции</string>
+    <string name="accounts_ru">Счета</string>
+    <string name="categories_ru">Категории</string>
+    <string name="statistics_ru">Статистика</string>
+    <string name="backPressed_ru">Нажмите дважды для выхода из приложения</string>
 </resources>

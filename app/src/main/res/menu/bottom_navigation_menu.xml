@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_operations"
+        android:enabled="true"
+        android:icon="@drawable/storage"
+        android:title="@string/operations_ru"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_accounts"
+        android:enabled="true"
+        android:icon="@drawable/account_balance_wallet"
+        android:title="@string/accounts_ru"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_categories"
+        android:enabled="true"
+        android:icon="@drawable/donut_small"
+        android:title="@string/categories_ru"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_statistics"
+        android:enabled="true"
+        android:icon="@drawable/insert_chart"
+        android:title="@string/statistics_ru"
+        app:showAsAction="always" />
+
+</menu>
