@@ -21,10 +21,9 @@ class MainActivity : AppCompatActivity(), OnFragmentActionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-        val isFirstVisit: Boolean = sharedPreferences.getBoolean(Companion.SAVED_STATE, false)
+        val isFirstVisit: Boolean = sharedPreferences.getBoolean(SAVED_STATE, false)
         if (!isFirstVisit) {
-            val intent = Intent(this, StartActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, StartActivity::class.java))
             true.saveFirstVisit()
         }
         setContentView(R.layout.activity_main)
@@ -41,6 +40,12 @@ class MainActivity : AppCompatActivity(), OnFragmentActionListener {
         })
     }
 
+    private fun Boolean.saveFirstVisit() {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(SAVED_STATE, this)
+        editor.apply()
+    }
+
     override fun onBackPressed() {
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed()
@@ -50,12 +55,6 @@ class MainActivity : AppCompatActivity(), OnFragmentActionListener {
                     Toast.LENGTH_SHORT).show()
             back_pressed = System.currentTimeMillis()
         }
-    }
-
-    private fun Boolean.saveFirstVisit() {
-        val editor = sharedPreferences.edit()
-        editor.putBoolean(Companion.SAVED_STATE, this)
-        editor.apply()
     }
 
     override fun onOpenOperationsFragment() {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class OperationsFragment extends Fragment {
     private OperationsAdapter adapter;
     private List<Operation> operations = new ArrayList<>();
     private OperationsViewModel viewModel;
+    private TextView textViewPressPlus;
     private FragmentCommunicator communicator = new FragmentCommunicator() {
         @Override
         public void onItemClickListener(String categoryName) {
@@ -62,6 +64,7 @@ public class OperationsFragment extends Fragment {
             }
         });
         recyclerView = view.findViewById(R.id.recycler_view_operations);
+        textViewPressPlus = view.findViewById(R.id.textViewPressPlus);
         return view;
     }
 
@@ -74,10 +77,12 @@ public class OperationsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(OperationsViewModel.class);
         viewModel.getLiveData().observe(getViewLifecycleOwner(), new Observer<List<Operation>>() {
+
             @Override
             public void onChanged(List<Operation> operations) {
                 OperationsFragment.this.operations = operations;
                 adapter.setOperations(operations);
+                if (!operations.isEmpty()) textViewPressPlus.setVisibility(View.GONE);
             }
         });
     }
