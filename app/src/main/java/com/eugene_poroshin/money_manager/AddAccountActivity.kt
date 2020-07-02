@@ -17,7 +17,7 @@ class AddAccountActivity : AppCompatActivity() {
     private var editTextAccountName: EditText? = null
     private var editTextBalance: EditText? = null
     private var editTextCurrency: EditText? = null
-    private var accountEntity: AccountEntity? = null
+    private lateinit var accountEntity: AccountEntity
     private var viewModelAccount: AccountsViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

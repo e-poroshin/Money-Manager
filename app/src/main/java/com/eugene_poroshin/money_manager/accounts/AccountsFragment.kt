@@ -23,11 +23,11 @@ class AccountsFragment : Fragment() {
     private var toolbar: Toolbar? = null
     private var recyclerView: RecyclerView? = null
     private var adapter: AccountsAdapter? = null
-    private var accounts: MutableList<AccountEntity> = ArrayList()
+    private var accounts: List<AccountEntity> = ArrayList()
     private var viewModel: AccountsViewModel? = null
-    private val communicator: FragmentCommunicator = object : FragmentCommunicator {
-        override fun onItemClickListener(categoryName: String) {}
-        override fun onItemAccountClickListener(accountEntity: AccountEntity) {
+    private val communicator = object : FragmentCommunicator {
+        override fun onItemClickListener(categoryName: String?) {}
+        override fun onItemAccountClickListener(accountEntity: AccountEntity?) {
             val intent = Intent(requireActivity(), EditAccountActivity::class.java)
             intent.putExtra(AccountEntity::class.java.simpleName, accountEntity as Serializable)
             startActivity(intent)
@@ -70,7 +70,7 @@ class AccountsFragment : Fragment() {
             })
     }
 
-    fun getBalance(accounts: List<AccountEntity>): Double {
+    private fun getBalance(accounts: List<AccountEntity>): Double {
         var sum = 0.0
         for (accountEntity in accounts) {
             sum += accountEntity.balance

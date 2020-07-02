@@ -27,7 +27,7 @@ class AddOperationActivity : AppCompatActivity() {
     private var radioGroup: RadioGroup? = null
     private var editTextSum: EditText? = null
     private var editTextDescription: EditText? = null
-    private var operationEntity: OperationEntity? = null
+    private lateinit var operationEntity: OperationEntity
     private var type: OperationType? = null
     private var spinnerCategories: Spinner? = null
     private var spinnerAccounts: Spinner? = null
@@ -42,7 +42,6 @@ class AddOperationActivity : AppCompatActivity() {
     private var accounts: List<AccountEntity> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_operation)
         toolbar = findViewById(R.id.toolbar_add_operation)
@@ -57,7 +56,7 @@ class AddOperationActivity : AppCompatActivity() {
         editTextDescription = findViewById(R.id.editTextDescription)
         findViewById<View>(R.id.buttonSaveOperation).setOnClickListener { saveOperation() }
         type = OperationType.CONSUMPTION
-        radioGroup?.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        radioGroup?.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, _ ->
             if (group.checkedRadioButtonId == R.id.radioButtonConsumption) {
                 toolbar?.title = "Расход"
                 type = OperationType.CONSUMPTION
@@ -70,7 +69,7 @@ class AddOperationActivity : AppCompatActivity() {
         spinnerCategories = findViewById(R.id.spinnerCategories)
         spinnerAccounts = findViewById(R.id.spinnerAccounts)
         viewModelCategory = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        viewModelCategory!!.liveDataCategoryNames.observe(
+        viewModelCategory!!.liveDataCategoryNames?.observe(
             this, Observer { categories ->
                 categoryNames = categories
                 adapterCategories = ArrayAdapter(
@@ -135,7 +134,8 @@ class AddOperationActivity : AppCompatActivity() {
         } else {
             editTextDescription!!.text.toString()
         }
-        operationEntity = OperationEntity(categoryId, accountId, date, sum, description, type)
+        operationEntity =
+            type?.let { OperationEntity(categoryId, accountId, date, sum, description, it) }!!
         viewModelOperation!!.insert(operationEntity)
         val newSumAccount = accounts[spinnerAccounts!!.selectedItemPosition]
         val currentBalance =

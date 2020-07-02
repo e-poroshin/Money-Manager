@@ -17,7 +17,7 @@ class EditAccountActivity : AppCompatActivity() {
     private var editTextAccountName: EditText? = null
     private var editTextBalance: EditText? = null
     private var editTextCurrency: EditText? = null
-    private var accountEntity: AccountEntity? = null
+    private lateinit var accountEntity: AccountEntity
     private var viewModelAccount: AccountsViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,9 +82,9 @@ class EditAccountActivity : AppCompatActivity() {
         } else {
             editTextCurrency?.text.toString()
         }
-        accountEntity?.name = name
-        accountEntity?.balance = balance
-        accountEntity?.currency = currency
+        accountEntity.name = name
+        accountEntity.balance = balance
+        accountEntity.currency = currency
         viewModelAccount?.update(accountEntity)
         finish()
     }

@@ -10,9 +10,12 @@ import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 
-class AccountsAdapter(accountList: MutableList<AccountEntity>, communication: FragmentCommunicator) : RecyclerView.Adapter<AccountsAdapter.RecyclerViewHolder>() {
+class AccountsAdapter(
+    accountList: List<AccountEntity>,
+    communication: FragmentCommunicator
+) : RecyclerView.Adapter<AccountsAdapter.RecyclerViewHolder>() {
 
-    private var accounts: MutableList<AccountEntity>?
+    private var accounts: List<AccountEntity>?
     private val communicator: FragmentCommunicator
 
     init {
@@ -27,12 +30,10 @@ class AccountsAdapter(accountList: MutableList<AccountEntity>, communication: Fr
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        if (accounts!![position].name == "Наличные") {
-            holder.imageViewIcon.setImageResource(R.drawable.group_28)
-        } else if (accounts!![position].name == "Карта") {
-            holder.imageViewIcon.setImageResource(R.drawable.group_27)
-        } else {
-            holder.imageViewIcon.setImageResource(R.drawable.group_29)
+        when (accounts!![position].id) {
+            1 -> holder.imageViewIcon.setImageResource(R.drawable.group_28)
+            2 -> holder.imageViewIcon.setImageResource(R.drawable.group_27)
+            else -> holder.imageViewIcon.setImageResource(R.drawable.group_29)
         }
         holder.textViewName.text = accounts!![position].name
         holder.textViewBalance.text = accounts!![position].balance.toString()
@@ -45,7 +46,7 @@ class AccountsAdapter(accountList: MutableList<AccountEntity>, communication: Fr
         } else 0
     }
 
-    fun setAccounts(accountList: MutableList<AccountEntity>?) {
+    fun setAccounts(accountList: List<AccountEntity>?) {
         accounts = accountList
         notifyDataSetChanged()
     }
