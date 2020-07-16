@@ -25,7 +25,7 @@ class OperationsFragment : Fragment() {
 
     private var toolbar: Toolbar? = null
     private var recyclerView: RecyclerView? = null
-    private var adapter: OperationsAdapter? = null
+    private lateinit var adapter: OperationsAdapter
     private var operations: List<Operation> = ArrayList()
     private lateinit var viewModel: OperationsViewModel
     private var textViewPressPlus: TextView? = null
@@ -64,8 +64,8 @@ class OperationsFragment : Fragment() {
         recyclerView!!.adapter = adapter
         viewModel = ViewModelProvider(this).get(OperationsViewModel::class.java)
         viewModel.liveData.observe(viewLifecycleOwner, Observer { operations ->
-                this@OperationsFragment.operations = operations
-                operations?.let { adapter!!.setOperations(it) }
+                this.operations = operations
+                operations?.let { adapter.setOperations(it) }
                 if (operations.isNotEmpty()) textViewPressPlus!!.visibility = View.GONE
             })
     }

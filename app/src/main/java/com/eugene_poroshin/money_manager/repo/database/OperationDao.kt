@@ -16,5 +16,5 @@ interface OperationDao {
 
     @Query("SELECT * FROM operations")
     @Transaction
-    fun allOperations(): LiveData<List<Operation>>
+    fun getAllOperations(): LiveData<List<Operation>>
 }

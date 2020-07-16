@@ -43,7 +43,7 @@ abstract class Repository {
 
     class OperationRepository(private val operationDao: OperationDao) {
 
-        val allOperations: LiveData<List<Operation>> = operationDao.allOperations()
+        val allOperations: LiveData<List<Operation>> = operationDao.getAllOperations()
 
         suspend fun insert(operations: OperationEntity) {
             operationDao.insert(operations)

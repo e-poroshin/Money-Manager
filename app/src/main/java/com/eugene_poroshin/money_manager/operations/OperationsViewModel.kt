@@ -11,7 +11,7 @@ import com.eugene_poroshin.money_manager.repo.database.OperationEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class OperationsViewModel(application: Application) : AndroidViewModel(application) {
+class OperationsViewModel (application: Application) : AndroidViewModel(application) {
 
     private val repository: Repository.OperationRepository
     val liveData: LiveData<List<Operation>>
