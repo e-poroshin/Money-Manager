@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.categories.CategoriesFragment
+import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.fragments.AddCategoryDialogFragment
 import com.eugene_poroshin.money_manager.fragments.AddCategoryDialogFragment.EditNameDialogListener
 import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
@@ -19,15 +18,18 @@ import com.eugene_poroshin.money_manager.fragments.OnFragmentActionListener
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import java.util.*
+import javax.inject.Inject
 
 class CategoriesFragment : Fragment(), EditNameDialogListener {
+
+    @Inject
+    lateinit var viewModel: CategoryViewModel
 
     private var onFragmentActionListener: OnFragmentActionListener? = null
     private var toolbar: Toolbar? = null
     private var recyclerView: RecyclerView? = null
     private var adapter: CategoriesAdapter? = null
     private var categories: List<CategoryEntity> = ArrayList()
-    private var viewModel: CategoryViewModel? = null
     private var addCategoryDialogFragment: AddCategoryDialogFragment? = null
     private val communicator = object : FragmentCommunicator {
         override fun onItemClickListener(categoryName: String?) {}
@@ -41,12 +43,16 @@ class CategoriesFragment : Fragment(), EditNameDialogListener {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_categories, container, false)
         toolbar = view.findViewById(R.id.my_toolbar)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
@@ -67,14 +73,17 @@ class CategoriesFragment : Fragment(), EditNameDialogListener {
         if (item.itemId == R.id.action_add_category) {
             addCategoryDialogFragment = AddCategoryDialogFragment()
             addCategoryDialogFragment!!.setTargetFragment(this@CategoriesFragment, 1)
-            addCategoryDialogFragment!!.show(parentFragmentManager, addCategoryDialogFragment!!::class.java.name)
+            addCategoryDialogFragment!!.show(
+                parentFragmentManager,
+                addCategoryDialogFragment!!::class.java.name
+            )
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onFinishEditDialog(inputText: String?) {
-        if (inputText!= null) viewModel!!.insert(CategoryEntity(inputText))
+        if (inputText != null) viewModel.insert(CategoryEntity(inputText))
         if (onFragmentActionListener != null) {
             onFragmentActionListener!!.onOpenCategoriesFragment()
         }
@@ -88,8 +97,7 @@ class CategoriesFragment : Fragment(), EditNameDialogListener {
         adapter = CategoriesAdapter(categories, communicator)
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         recyclerView!!.adapter = adapter
-        viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        viewModel!!.liveDataCategories.observe(
+        viewModel.liveDataCategories.observe(
             viewLifecycleOwner,
             Observer { categoryEntities ->
                 categories = categoryEntities

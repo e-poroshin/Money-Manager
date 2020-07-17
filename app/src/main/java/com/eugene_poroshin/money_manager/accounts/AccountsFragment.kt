@@ -13,18 +13,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.AddAccountActivity
 import com.eugene_poroshin.money_manager.EditAccountActivity
 import com.eugene_poroshin.money_manager.R
+import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import java.io.Serializable
 import java.util.*
+import javax.inject.Inject
 
 class AccountsFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModel: AccountsViewModel
 
     private var toolbar: Toolbar? = null
     private var recyclerView: RecyclerView? = null
     private var adapter: AccountsAdapter? = null
     private var accounts: List<AccountEntity> = ArrayList()
-    private var viewModel: AccountsViewModel? = null
     private val communicator = object : FragmentCommunicator {
         override fun onItemClickListener(categoryName: String?) {}
         override fun onItemAccountClickListener(accountEntity: AccountEntity?) {
@@ -32,6 +36,11 @@ class AccountsFragment : Fragment() {
             intent.putExtra(AccountEntity::class.java.simpleName, accountEntity as Serializable)
             startActivity(intent)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,8 +71,7 @@ class AccountsFragment : Fragment() {
         adapter = AccountsAdapter(accounts, communicator)
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         recyclerView!!.adapter = adapter
-        viewModel = ViewModelProvider(this).get(AccountsViewModel::class.java)
-        viewModel!!.liveDataAccounts.observe(viewLifecycleOwner, Observer { accountEntities ->
+        viewModel.liveDataAccounts.observe(viewLifecycleOwner, Observer { accountEntities ->
                 accounts = accountEntities
                 adapter!!.setAccounts(accounts)
                 toolbar!!.title = "Баланс: " + getBalance(accounts) + " BYN"

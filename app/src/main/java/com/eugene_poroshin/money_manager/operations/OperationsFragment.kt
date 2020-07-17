@@ -15,23 +15,32 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.AddOperationActivity
 import com.eugene_poroshin.money_manager.R
+import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
 import com.eugene_poroshin.money_manager.operations.OperationsFragment
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.Operation
 import java.util.*
+import javax.inject.Inject
 
 class OperationsFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModel: OperationsViewModel
 
     private var toolbar: Toolbar? = null
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: OperationsAdapter
     private var operations: List<Operation> = ArrayList()
-    private lateinit var viewModel: OperationsViewModel
     private var textViewPressPlus: TextView? = null
     private val communicator = object : FragmentCommunicator {
         override fun onItemClickListener(categoryName: String?) {}
         override fun onItemAccountClickListener(accountEntity: AccountEntity?) {}
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -62,7 +71,6 @@ class OperationsFragment : Fragment() {
         adapter = OperationsAdapter(operations, communicator)
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         recyclerView!!.adapter = adapter
-        viewModel = ViewModelProvider(this).get(OperationsViewModel::class.java)
         viewModel.liveData.observe(viewLifecycleOwner, Observer { operations ->
                 this.operations = operations
                 operations?.let { adapter.setOperations(it) }

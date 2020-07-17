@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.categories.CategoryViewModel
+import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.fragments.OnFragmentActionListener
 import com.eugene_poroshin.money_manager.operations.OperationType
 import com.eugene_poroshin.money_manager.operations.OperationsViewModel
@@ -21,14 +22,19 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import java.util.*
+import javax.inject.Inject
 
 class StatisticsFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelCategory: CategoryViewModel
+    @Inject
+    lateinit var viewModelOperation: OperationsViewModel
+
     private var onFragmentActionListener: OnFragmentActionListener? = null
     private var toolbar: Toolbar? = null
     private var pieChart: PieChart? = null
     private var operations: List<Operation> = ArrayList()
-    private var viewModelOperation: OperationsViewModel? = null
-    private var viewModelCategory: CategoryViewModel? = null
     private var categoryNames: List<String> = ArrayList()
 
     override fun onAttach(context: Context) {
@@ -36,6 +42,11 @@ class StatisticsFragment : Fragment() {
         if (context is OnFragmentActionListener) {
             onFragmentActionListener = context
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -49,13 +60,11 @@ class StatisticsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         setHasOptionsMenu(true)
         pieChart = view.findViewById(R.id.pieChart)
-        viewModelOperation = ViewModelProvider(this).get(OperationsViewModel::class.java)
-        viewModelCategory = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        viewModelOperation!!.liveData.observe(
+        viewModelOperation.liveData.observe(
             viewLifecycleOwner,
             Observer { operationList ->
                 operations = operationList
-                viewModelCategory!!.liveDataCategoryNames.observe(
+                viewModelCategory.liveDataCategoryNames.observe(
                     viewLifecycleOwner,
                     Observer { categories ->
                         categoryNames = categories
