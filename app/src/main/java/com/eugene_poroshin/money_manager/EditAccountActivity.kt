@@ -40,9 +40,9 @@ class EditAccountActivity : AppCompatActivity() {
         if (receivedIndent != null) {
             accountEntity =
                 receivedIndent.getSerializableExtra(AccountEntity::class.java.simpleName) as AccountEntity
-            editTextAccountName?.setText(accountEntity!!.name)
-            editTextBalance?.setText(accountEntity!!.balance.toString())
-            editTextCurrency?.setText(accountEntity!!.currency)
+            editTextAccountName?.setText(accountEntity.name)
+            editTextBalance?.setText(accountEntity.balance.toString())
+            editTextCurrency?.setText(accountEntity.currency)
         }
     }
 

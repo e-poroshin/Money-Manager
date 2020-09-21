@@ -69,7 +69,7 @@ class AddOperationActivity : AppCompatActivity() {
         spinnerCategories = findViewById(R.id.spinnerCategories)
         spinnerAccounts = findViewById(R.id.spinnerAccounts)
         viewModelCategory = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        viewModelCategory!!.liveDataCategoryNames?.observe(
+        viewModelCategory!!.liveDataCategoryNames.observe(
             this, Observer { categories ->
                 categoryNames = categories
                 adapterCategories = ArrayAdapter(
