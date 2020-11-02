@@ -12,5 +12,5 @@
     <string name="categories_ru">Категории</string>
     <string name="statistics_ru">Статистика</string>
     <string name="backPressed_ru">Нажмите дважды для выхода из приложения</string>
-    <string name="press_plus_to_add_operation">Нажмите \" + \"\nдля добавления операции</string>
+    <string name="press_plus_to_add_operation">Изменяйте остатки по счетам\nво вклаке \"Счета\" меню навигации.\n\nДля добавления операции\nнажмите \" + \"</string>
 </resources>
