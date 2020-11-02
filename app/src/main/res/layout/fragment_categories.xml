@@ -10,7 +10,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:title="Все категории"
-        app:menu="@menu/categories_menu"
         app:titleTextColor="@color/text_icons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

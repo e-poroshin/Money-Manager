@@ -1,95 +1,72 @@
 package com.eugene_poroshin.money_manager.statistics
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.categories.CategoryViewModel
+import com.eugene_poroshin.money_manager.databinding.FragmentStatisticsBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.fragments.OnFragmentActionListener
 import com.eugene_poroshin.money_manager.operations.OperationType
 import com.eugene_poroshin.money_manager.operations.OperationsViewModel
 import com.eugene_poroshin.money_manager.repo.database.Operation
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import java.util.*
 import javax.inject.Inject
 
-class StatisticsFragment : Fragment() {
+class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     @Inject
     lateinit var viewModelCategory: CategoryViewModel
+
     @Inject
     lateinit var viewModelOperation: OperationsViewModel
 
-    private var onFragmentActionListener: OnFragmentActionListener? = null
-    private var toolbar: Toolbar? = null
-    private var pieChart: PieChart? = null
+    private var binding: FragmentStatisticsBinding? = null
     private var operations: List<Operation> = ArrayList()
     private var categoryNames: List<String> = ArrayList()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentActionListener) {
-            onFragmentActionListener = context
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view =
-            inflater.inflate(R.layout.fragment_statistics, container, false)
-        toolbar = view.findViewById(R.id.my_toolbar)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        setHasOptionsMenu(true)
-        pieChart = view.findViewById(R.id.pieChart)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentStatisticsBinding.bind(view)
         viewModelOperation.liveData.observe(
             viewLifecycleOwner,
-            Observer { operationList ->
+            { operationList ->
                 operations = operationList
-                viewModelCategory.liveDataCategoryNames.observe(
-                    viewLifecycleOwner,
-                    Observer { categories ->
-                        categoryNames = categories
-                        setUpPieChart(operations, categoryNames)
-                    })
             })
-        return view
+        viewModelCategory.liveDataCategoryNames.observe(
+            viewLifecycleOwner,
+            { categories ->
+                categoryNames = categories
+                setUpPieChart(operations, categoryNames)
+            })
     }
 
     private fun setUpPieChart(
         operationList: List<Operation>,
         categoryNames: List<String>
     ) {
+        //todo kotlin filter - is it ok? \/
+
         val pieEntries: MutableList<PieEntry> = ArrayList()
-        for (j in categoryNames.indices) {
+        categoryNames.forEach { outerLoopCategoryName ->
             var sum = 0.0
             var label: String? = ""
-            for (i in operationList.indices) {
-                if (operationList[i].operationEntity?.type == OperationType.CONSUMPTION
-                ) {
-                    if (categoryNames[j] == operationList[i].category?.name) {
-                        sum += operationList[i].operationEntity?.sum!!
-                        label = operationList[i].category?.name
-                    }
-                }
+
+            val expenseOperationsList =
+                operationList.filter { it.operationEntity?.type == OperationType.EXPENSE }
+            val resultOperationsList =
+                expenseOperationsList.filter { it.category?.name == outerLoopCategoryName }
+            resultOperationsList.forEach {
+                sum += it.operationEntity?.sum!!
+                label = it.category?.name
             }
             if (sum != 0.0) {
                 pieEntries.add(PieEntry(sum.toFloat(), label))
@@ -100,19 +77,25 @@ class StatisticsFragment : Fragment() {
         dataSet.valueTextColor = R.color.colorPrimaryDark
         dataSet.valueTextSize = 14f
         val data = PieData(dataSet)
-        pieChart!!.data = data
-        pieChart!!.animateXY(1000, 1000)
-        pieChart!!.invalidate()
+        binding?.pieChart?.data = data
+        binding?.pieChart?.animateXY(1000, 1000)
+        binding?.pieChart?.invalidate()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        onFragmentActionListener = null
+    override fun onDestroyView() {
+        binding = null
+        super.onDestroyView()
     }
 
     companion object {
-        fun newInstance(): StatisticsFragment {
-            return StatisticsFragment()
+        private var INSTANCE: StatisticsFragment? = null
+
+        //todo is it ok, or by lazy?
+        fun getInstance(): StatisticsFragment {
+            return if (INSTANCE == null) {
+                INSTANCE = StatisticsFragment()
+                INSTANCE!!
+            } else INSTANCE!!
         }
     }
 }

@@ -2,20 +2,19 @@ package com.eugene_poroshin.money_manager.operations
 
 import androidx.room.TypeConverter
 
-object OperationTypeConverter {
-    @JvmStatic
-    @TypeConverter
-    fun fromTypeToString(type: OperationType?): String? {
-        return type?.toString()
-    }
+class OperationTypeConverter {
 
-    @JvmStatic
     @TypeConverter
-    fun fromStringToType(type: String): OperationType {
-        return when (type) {
-            OperationType.CONSUMPTION.toString() -> OperationType.CONSUMPTION
-            OperationType.INCOME.toString() -> OperationType.INCOME
-            else -> throw IllegalArgumentException("Could not recognize type")
-        }
-    }
+    fun fromTypeToString(type: OperationType?): String? = type?.converterName
+
+    @TypeConverter
+    fun fromStringToType(stringType: String?): OperationType? =
+        OperationType.values().firstOrNull { type -> type.converterName == stringType }
 }
+
+private val OperationType.converterName: String
+    get() =
+        when (this) {
+            OperationType.EXPENSE -> "CONSUMPTION"
+            OperationType.INCOME -> "INCOME"
+        }

@@ -1,5 +1,6 @@
 package com.eugene_poroshin.money_manager.repo.database
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 

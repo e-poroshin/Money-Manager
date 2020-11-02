@@ -52,7 +52,7 @@ class OperationsAdapter(
         holder.textViewCurrency.text = operations!![position].account?.currency
         holder.textViewSum.text = operations!![position].operationEntity?.sum.toString()
         if (operations!![position].operationEntity
-                ?.type == OperationType.CONSUMPTION
+                ?.type == OperationType.EXPENSE
         ) {
             holder.textViewSum.setTextColor(
                 ContextCompat.getColor(

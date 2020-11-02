@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,24 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:menu="@menu/add_account_menu"
-        app:title="Добавить счет"
-        app:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Добавить счет"
+        app:titleTextColor="@android:color/white" />
 
     <EditText
         android:id="@+id/editTextAccountName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:textSize="14sp"
+        android:layout_marginRight="20dp"
         android:hint="Название счета"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_add_account" />
 
@@ -36,24 +31,24 @@
         android:id="@+id/textViewAddBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Текущий баланс:"
-        android:textSize="14sp"
-        android:textColor="@color/colorAccent"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Текущий баланс:"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountName"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccountName" />
 
     <EditText
         android:id="@+id/editTextBalance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:textSize="14sp"
+        android:layout_marginRight="20dp"
         android:hint="Введите сумму"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAddBalance" />
 
@@ -61,14 +56,14 @@
         android:id="@+id/textViewCurrencyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Валюта счета:"
-        android:textSize="14sp"
-        android:textColor="@color/colorAccent"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Валюта счета:"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextBalance"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextBalance" />
 
     <EditText
         android:id="@+id/editTextCurrency"
@@ -77,8 +72,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
-        android:textSize="14sp"
         android:hint="Например: BYN"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCurrencyName" />
 
@@ -86,16 +81,16 @@
         android:id="@+id/buttonSaveAccount"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="40dp"
         android:layout_marginLeft="70dp"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="70dp"
         android:background="@drawable/res_background_round_rect_red"
         android:text="Сохранить"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCurrency"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCurrency" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

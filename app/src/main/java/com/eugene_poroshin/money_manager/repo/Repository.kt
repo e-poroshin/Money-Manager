@@ -5,8 +5,10 @@ import com.eugene_poroshin.money_manager.repo.database.*
 
 abstract class Repository {
 
+
     class CategoryRepository(private val categoryDao: CategoryDao) {
 
+        //todo use KotlinFlow instead LiveData (Room doc)
         val allCategories: LiveData<List<CategoryEntity>> = categoryDao.allCategories()
         val categoryNames: LiveData<List<String>> = categoryDao.categoryNames()
 

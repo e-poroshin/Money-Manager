@@ -1,19 +1,13 @@
 package com.eugene_poroshin.money_manager
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.accounts.AccountsViewModel
 import com.eugene_poroshin.money_manager.categories.CategoryViewModel
+import com.eugene_poroshin.money_manager.databinding.ActivityAddOperationBinding
 import com.eugene_poroshin.money_manager.operations.OperationType
 import com.eugene_poroshin.money_manager.operations.OperationsViewModel
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
@@ -23,54 +17,45 @@ import java.util.*
 
 class AddOperationActivity : AppCompatActivity() {
 
-    private var toolbar: Toolbar? = null
-    private var radioGroup: RadioGroup? = null
-    private var editTextSum: EditText? = null
-    private var editTextDescription: EditText? = null
+    private lateinit var binding: ActivityAddOperationBinding
+
     private lateinit var operationEntity: OperationEntity
-    private var type: OperationType? = null
-    private var spinnerCategories: Spinner? = null
-    private var spinnerAccounts: Spinner? = null
+    private var type: OperationType = OperationType.EXPENSE
     private var adapterCategories: ArrayAdapter<String>? = null
     private var adapterAccounts: ArrayAdapter<String>? = null
     private var categoryNames: List<String> = ArrayList()
     private var accountNames: List<String> = ArrayList()
-    private var viewModelCategory: CategoryViewModel? = null
-    private var viewModelAccount: AccountsViewModel? = null
+
+    //todo - is it OK by lazy? \/
+    private val viewModelCategory
+            by lazy { ViewModelProvider(this).get(CategoryViewModel::class.java) }
+    private val viewModelAccount
+            by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
     private var viewModelOperation: OperationsViewModel? = null
     private var categories: List<CategoryEntity> = ArrayList()
     private var accounts: List<AccountEntity> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_operation)
-        toolbar = findViewById(R.id.toolbar_add_operation)
-        setSupportActionBar(toolbar)
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-            toolbar?.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        binding = ActivityAddOperationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        initToolbar()
+        binding.buttonSaveOperation.setOnClickListener { saveOperation() }
+        binding.radioGroup.setOnCheckedChangeListener { group, _ ->
+            when (group.checkedRadioButtonId) {
+                R.id.radioButtonConsumption -> {
+                    binding.toolbarAddOperation.title = "Расход"
+                    type = OperationType.EXPENSE
+                }
+                R.id.radioButtonIncome -> {
+                    binding.toolbarAddOperation.title = "Доход"
+                    type = OperationType.INCOME
+                }
+            }
         }
-        radioGroup = findViewById(R.id.radioGroup)
-        editTextSum = findViewById(R.id.editTextBalance)
-        editTextDescription = findViewById(R.id.editTextDescription)
-        findViewById<View>(R.id.buttonSaveOperation).setOnClickListener { saveOperation() }
-        type = OperationType.CONSUMPTION
-        radioGroup?.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, _ ->
-            if (group.checkedRadioButtonId == R.id.radioButtonConsumption) {
-                toolbar?.title = "Расход"
-                type = OperationType.CONSUMPTION
-            }
-            if (group.checkedRadioButtonId == R.id.radioButtonIncome) {
-                toolbar?.title = "Доход"
-                type = OperationType.INCOME
-            }
-        })
-        spinnerCategories = findViewById(R.id.spinnerCategories)
-        spinnerAccounts = findViewById(R.id.spinnerAccounts)
-        viewModelCategory = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        viewModelCategory!!.liveDataCategoryNames.observe(
-            this, Observer { categories ->
+        viewModelCategory.liveDataCategoryNames.observe(
+            this, { categories ->
                 categoryNames = categories
                 adapterCategories = ArrayAdapter(
                     baseContext,
@@ -78,15 +63,14 @@ class AddOperationActivity : AppCompatActivity() {
                     categoryNames
                 )
                 adapterCategories!!.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinnerCategories?.adapter = adapterCategories
-                spinnerCategories?.setSelection(0)
+                binding.spinnerCategories.adapter = adapterCategories
+                binding.spinnerCategories.setSelection(0)
             })
-        viewModelCategory!!.liveDataCategories.observe(
-            this, Observer { categoryEntityList -> categories = categoryEntityList })
-        viewModelAccount = ViewModelProvider(this).get(AccountsViewModel::class.java)
-        viewModelAccount!!.liveDataAccountNames.observe(
+        viewModelCategory.liveDataCategories.observe(
+            this, { categoryEntityList -> categories = categoryEntityList })
+        viewModelAccount.liveDataAccountNames.observe(
             this,
-            Observer { accounts ->
+            { accounts ->
                 accountNames = accounts
                 adapterAccounts = ArrayAdapter(
                     baseContext,
@@ -94,58 +78,42 @@ class AddOperationActivity : AppCompatActivity() {
                     accountNames
                 )
                 adapterAccounts!!.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinnerAccounts?.adapter = adapterAccounts
-                spinnerAccounts?.setSelection(0)
+                binding.spinnerAccounts.adapter = adapterAccounts
+                binding.spinnerAccounts.setSelection(0)
             })
-        viewModelAccount!!.liveDataAccounts.observe(
-            this, Observer { accountEntityList -> accounts = accountEntityList })
+        viewModelAccount.liveDataAccounts.observe(
+            this, { accountEntityList -> accounts = accountEntityList })
         viewModelOperation = ViewModelProvider(this).get(OperationsViewModel::class.java)
     }
+    //todo liveDataCategories and liveDataCategoryNames, -//- AccountNames and accounts?
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.add_operation_menu, menu)
-        return true
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_check) {
-            saveOperation()
-            return true
+    private fun initToolbar() {
+        binding.toolbarAddOperation.inflateMenu(R.menu.add_operation_menu)
+        binding.toolbarAddOperation.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        binding.toolbarAddOperation.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarAddOperation.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_check -> saveOperation()
+            }
+            true
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun saveOperation() {
-        val categoryId = categories[spinnerCategories!!.selectedItemPosition].id
-        val accountId = accounts[spinnerAccounts!!.selectedItemPosition].id
+        val categoryId = categories[binding.spinnerCategories.selectedItemPosition].id
+        val accountId = accounts[binding.spinnerAccounts.selectedItemPosition].id
         val date = System.currentTimeMillis()
-        val sum: Double = if (editTextSum!!.text.toString().isEmpty()) {
-            0.0
-        } else {
-            editTextSum!!.text.toString().toDouble()
-        }
-        val description: String = if (editTextDescription!!.text.toString().isEmpty()) {
-            ""
-        } else {
-            editTextDescription!!.text.toString()
-        }
-        operationEntity =
-            type?.let { OperationEntity(categoryId, accountId, date, sum, description, it) }!!
+        val sum: Double = binding.editTextBalance.text.toString().toDoubleOrNull() ?: 0.0
+        val description: String = binding.editTextDescription.text?.toString().orEmpty()
+        operationEntity = OperationEntity(categoryId, accountId, date, sum, description, type)
         viewModelOperation!!.insert(operationEntity)
-        val newSumAccount = accounts[spinnerAccounts!!.selectedItemPosition]
-        val currentBalance =
-            accounts[spinnerAccounts!!.selectedItemPosition].balance
-        if (type == OperationType.CONSUMPTION) {
-            newSumAccount.balance = currentBalance - sum
-        } else if (type == OperationType.INCOME) {
-            newSumAccount.balance = currentBalance + sum
+        val newSumAccount = accounts[binding.spinnerAccounts.selectedItemPosition]
+        val currentBalance = accounts[binding.spinnerAccounts.selectedItemPosition].balance
+        when (type) {
+            OperationType.EXPENSE -> newSumAccount.balance = currentBalance - sum
+            OperationType.INCOME -> newSumAccount.balance = currentBalance + sum
         }
-        viewModelAccount!!.update(newSumAccount)
+        viewModelAccount.update(newSumAccount)
         finish()
     }
 }
