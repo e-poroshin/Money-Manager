@@ -1,10 +1,10 @@
-package com.eugene_poroshin.money_manager
+package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.eugene_poroshin.money_manager.accounts.AccountsViewModel
+import com.eugene_poroshin.money_manager.R
+import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
 import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 

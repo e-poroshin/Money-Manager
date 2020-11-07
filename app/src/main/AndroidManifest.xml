@@ -10,17 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StartActivity" />
-        <activity android:name=".AddOperationActivity" />
-        <activity android:name=".AddAccountActivity" />
-        <activity android:name=".EditAccountActivity" />
+        <activity android:name=".ui.StartActivity" />
+        <activity android:name="com.eugene_poroshin.money_manager.ui.operations.AddOperationActivity" />
+        <activity android:name="com.eugene_poroshin.money_manager.ui.accounts.AddAccountActivity" />
+        <activity android:name="com.eugene_poroshin.money_manager.ui.accounts.EditAccountActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

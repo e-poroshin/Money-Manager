@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.categories
+package com.eugene_poroshin.money_manager.ui.categories
 
 import android.os.Bundle
 import android.view.View
@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentCategoriesBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.fragments.AddCategoryDialogFragment
-import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
-import com.eugene_poroshin.money_manager.fragments.OnFragmentActionListener
+import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
+import com.eugene_poroshin.money_manager.ui.OnFragmentActionListener
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
+import com.eugene_poroshin.money_manager.repo.viewmodel.CategoryViewModel
 import java.util.*
 import javax.inject.Inject
 

@@ -1,19 +1,17 @@
-package com.eugene_poroshin.money_manager.operations
+package com.eugene_poroshin.money_manager.ui.operations
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eugene_poroshin.money_manager.AddOperationActivity
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentOperationsBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.Operation
-import com.eugene_poroshin.money_manager.statistics.StatisticsFragment
-import java.util.*
+import com.eugene_poroshin.money_manager.repo.viewmodel.OperationsViewModel
+import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
 import javax.inject.Inject
 
 class OperationsFragment : Fragment(R.layout.fragment_operations) {
@@ -24,7 +22,11 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
     lateinit var viewModel: OperationsViewModel
 
     private lateinit var adapter: OperationsAdapter
-    private var operations: List<Operation> = ArrayList()
+    private var operations: List<Operation> = emptyList()
+        set(value) {
+            field = value
+            updateOperationList(value)
+        }
     private val communicator = object : FragmentCommunicator {
         override fun onItemClickListener(categoryName: String?) {}
         override fun onItemAccountClickListener(accountEntity: AccountEntity?) {}
@@ -48,11 +50,15 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
         adapter = OperationsAdapter(operations, communicator)
         binding!!.recyclerViewOperations.layoutManager = LinearLayoutManager(activity)
         binding!!.recyclerViewOperations.adapter = adapter
-        viewModel.liveData.observe(viewLifecycleOwner, { operations ->
+        viewModel.liveDataOperations.observe(viewLifecycleOwner, { operations ->
             this.operations = operations
-            operations?.let { adapter.setOperations(it) }
-            if (operations.isNotEmpty()) binding!!.textViewPressPlus.visibility = View.GONE
         })
+    }
+
+    private fun updateOperationList(operations: List<Operation>) {
+        adapter.setOperations(operations)
+        if (operations.isEmpty()) binding!!.textViewPressPlus.visibility = View.VISIBLE
+        else binding!!.textViewPressPlus.visibility = View.GONE
     }
 
     override fun onDestroyView() {
@@ -64,7 +70,7 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
         private var INSTANCE: OperationsFragment? = null
 
         fun getInstance(): OperationsFragment {
-            return if(INSTANCE == null) {
+            return if (INSTANCE == null) {
                 INSTANCE = OperationsFragment()
                 INSTANCE!!
             } else INSTANCE!!

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/dialog_fragment_add_category_root">
 
     <EditText
         android:id="@+id/edit_text_category_name"

@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.operations
+package com.eugene_poroshin.money_manager.ui.operations
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
+import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.Operation
 import java.util.*
 

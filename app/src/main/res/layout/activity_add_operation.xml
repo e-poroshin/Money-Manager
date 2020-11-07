@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_operation_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="Расход"
-        app:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Расход"
+        app:titleTextColor="@android:color/white" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -31,18 +30,18 @@
             android:id="@+id/radioButtonConsumption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="Расход"
-            android:textSize="14sp"
-            android:checked="true"/>
+            android:textSize="14sp" />
 
         <RadioButton
             android:id="@+id/radioButtonIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:checked="false"
             android:text="Доход"
-            android:textSize="14sp"
-            android:checked="false"/>
+            android:textSize="14sp" />
 
     </RadioGroup>
 
@@ -50,70 +49,70 @@
         android:id="@+id/textViewSelectCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выберите категорию:"
-        android:textSize="14sp"
-        android:textColor="@color/colorAccent"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Выберите категорию:"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"/>
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <Spinner
         android:id="@+id/spinnerCategories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectCategory"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewSelectCategory" />
 
     <TextView
         android:id="@+id/textViewSelectAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выберите счет:"
-        android:textSize="14sp"
-        android:textColor="@color/colorAccent"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:text="Выберите счет:"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategories"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategories" />
 
     <Spinner
         android:id="@+id/spinnerAccounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectAccount"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewSelectAccount" />
 
     <TextView
         android:id="@+id/textViewAddBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Введите сумму:"
-        android:textSize="14sp"
-        android:textColor="@color/colorAccent"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:text="Введите сумму:"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAccounts"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerAccounts" />
 
     <EditText
         android:id="@+id/editTextBalance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:textSize="14sp"
+        android:layout_marginRight="20dp"
         android:hint="Сумма"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAddBalance" />
 
@@ -124,8 +123,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:textSize="14sp"
         android:hint="Описание (опционально)"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextBalance" />
 

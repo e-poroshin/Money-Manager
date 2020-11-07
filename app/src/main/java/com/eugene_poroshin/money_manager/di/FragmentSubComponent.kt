@@ -1,10 +1,10 @@
 package com.eugene_poroshin.money_manager.di
 
 import androidx.fragment.app.Fragment
-import com.eugene_poroshin.money_manager.accounts.AccountsFragment
-import com.eugene_poroshin.money_manager.categories.CategoriesFragment
-import com.eugene_poroshin.money_manager.operations.OperationsFragment
-import com.eugene_poroshin.money_manager.statistics.StatisticsFragment
+import com.eugene_poroshin.money_manager.ui.accounts.AccountsFragment
+import com.eugene_poroshin.money_manager.ui.categories.CategoriesFragment
+import com.eugene_poroshin.money_manager.ui.operations.OperationsFragment
+import com.eugene_poroshin.money_manager.ui.statistics.StatisticsFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 

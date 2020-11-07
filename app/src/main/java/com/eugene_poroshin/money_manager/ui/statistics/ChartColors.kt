@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.statistics
+package com.eugene_poroshin.money_manager.ui.statistics
 
 import android.graphics.Color
 

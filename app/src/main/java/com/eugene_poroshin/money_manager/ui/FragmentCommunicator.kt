@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.fragments
+package com.eugene_poroshin.money_manager.ui
 
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 

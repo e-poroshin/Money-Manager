@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager
+package com.eugene_poroshin.money_manager.ui
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -6,30 +6,29 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.eugene_poroshin.money_manager.accounts.AccountsFragment
-import com.eugene_poroshin.money_manager.categories.CategoriesFragment
-import com.eugene_poroshin.money_manager.fragments.OnFragmentActionListener
-import com.eugene_poroshin.money_manager.operations.OperationsFragment
-import com.eugene_poroshin.money_manager.statistics.StatisticsFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.eugene_poroshin.money_manager.R
+import com.eugene_poroshin.money_manager.databinding.ActivityMainBinding
+import com.eugene_poroshin.money_manager.ui.accounts.AccountsFragment
+import com.eugene_poroshin.money_manager.ui.categories.CategoriesFragment
+import com.eugene_poroshin.money_manager.ui.operations.OperationsFragment
+import com.eugene_poroshin.money_manager.ui.statistics.StatisticsFragment
 
-class MainActivity : AppCompatActivity(), OnFragmentActionListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), OnFragmentActionListener {
 
+    private var binding: ActivityMainBinding? = null
     private var backPressed: Long = 0
     private val sharedPreferences: SharedPreferences by lazy { getPreferences(MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //todo splash screen
-        openStartScreenIfNeeded()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        openStartScreenIfNeeded() //splash screen on first visit
+        binding = ActivityMainBinding.bind(findViewById(R.id.activity_main_root))
         initBottomNavigation()
         onOpenOperationsFragment()
     }
 
     private fun initBottomNavigation() {
-        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        binding?.bottomNavigationView?.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_categories -> onOpenCategoriesFragment()
                 R.id.action_accounts -> onOpenAccountsFragment()
@@ -48,9 +47,9 @@ class MainActivity : AppCompatActivity(), OnFragmentActionListener {
         }
     }
 
-    private fun saveFirstVisit(saveState: Boolean) {
+    private fun saveFirstVisit(state: Boolean) {
         sharedPreferences.edit()
-            .putBoolean(SAVED_STATE, saveState)
+            .putBoolean(SAVED_STATE, state)
             .apply()
     }
 

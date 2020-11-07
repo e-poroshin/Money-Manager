@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.categories
+package com.eugene_poroshin.money_manager.repo.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -16,7 +16,6 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     private val repository = Repository.CategoryRepository(categoryDao)
 
     val liveDataCategories: LiveData<List<CategoryEntity>> = repository.allCategories
-    val liveDataCategoryNames: LiveData<List<String>> = repository.categoryNames
 
     fun insert(category: CategoryEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(category)

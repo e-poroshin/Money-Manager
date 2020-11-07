@@ -1,6 +1,5 @@
 package com.eugene_poroshin.money_manager.repo.database
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -17,7 +16,4 @@ interface AccountDao {
 
     @Query("SELECT * FROM accounts")
     fun allAccounts(): LiveData<List<AccountEntity>>
-
-    @Query("SELECT account_name FROM accounts")
-    fun accountNames(): LiveData<List<String>>
 }

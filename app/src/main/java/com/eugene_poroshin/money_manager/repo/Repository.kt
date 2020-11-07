@@ -10,7 +10,6 @@ abstract class Repository {
 
         //todo use KotlinFlow instead LiveData (Room doc)
         val allCategories: LiveData<List<CategoryEntity>> = categoryDao.allCategories()
-        val categoryNames: LiveData<List<String>> = categoryDao.categoryNames()
 
         suspend fun insert(category: CategoryEntity) {
             categoryDao.insert(category)
@@ -28,7 +27,6 @@ abstract class Repository {
     class AccountRepository(private val accountDao: AccountDao) {
 
         val allAccounts: LiveData<List<AccountEntity>> = accountDao.allAccounts()
-        val accountNames: LiveData<List<String>> = accountDao.accountNames()
 
         suspend fun insert(accounts: AccountEntity) {
             accountDao.insert(accounts)

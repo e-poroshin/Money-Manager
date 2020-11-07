@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.accounts
+package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,13 +6,12 @@ import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eugene_poroshin.money_manager.AddAccountActivity
-import com.eugene_poroshin.money_manager.EditAccountActivity
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentAccountsBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
+import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
+import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
 import java.util.*
 import javax.inject.Inject
 

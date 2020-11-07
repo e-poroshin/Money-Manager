@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.fragments
+package com.eugene_poroshin.money_manager.ui
 
 interface OnFragmentActionListener {
     fun onOpenOperationsFragment()

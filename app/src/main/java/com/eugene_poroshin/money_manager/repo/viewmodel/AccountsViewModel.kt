@@ -1,7 +1,6 @@
-package com.eugene_poroshin.money_manager.accounts
+package com.eugene_poroshin.money_manager.repo.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -17,7 +16,6 @@ class AccountsViewModel(application: Application) : AndroidViewModel(application
     private val repository = Repository.AccountRepository(accountDao)
 
     val liveDataAccounts: LiveData<List<AccountEntity>> = repository.allAccounts
-    val liveDataAccountNames: LiveData<List<String>> = repository.accountNames
 
     fun insert(accounts: AccountEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(accounts)

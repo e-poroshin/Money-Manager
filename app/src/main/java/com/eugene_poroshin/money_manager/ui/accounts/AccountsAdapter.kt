@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.accounts
+package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.fragments.FragmentCommunicator
+import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 
 class AccountsAdapter(

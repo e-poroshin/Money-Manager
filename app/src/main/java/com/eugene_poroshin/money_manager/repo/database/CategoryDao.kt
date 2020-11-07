@@ -16,7 +16,4 @@ interface CategoryDao {
 
     @Query("SELECT * FROM categories")
     fun allCategories(): LiveData<List<CategoryEntity>>
-
-    @Query("SELECT category_name FROM categories")
-    fun categoryNames(): LiveData<List<String>>
 }

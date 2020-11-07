@@ -5,11 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.eugene_poroshin.money_manager.operations.OperationType
-import com.eugene_poroshin.money_manager.operations.OperationTypeConverter
+import com.eugene_poroshin.money_manager.ui.operations.OperationTypeConverter
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @TypeConverters(OperationTypeConverter::class)
 @Database(

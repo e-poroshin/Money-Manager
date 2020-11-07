@@ -45,6 +45,7 @@
         android:textColor="@color/primaryText"
         android:alpha="0.5"
         app:fontFamily="@font/roboto"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/recycler_view_operations"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.operations
+package com.eugene_poroshin.money_manager.ui.operations
 
 import androidx.room.TypeConverter
 
