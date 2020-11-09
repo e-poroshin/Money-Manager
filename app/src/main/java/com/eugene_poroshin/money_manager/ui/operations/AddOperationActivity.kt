@@ -44,6 +44,7 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         binding = ActivityAddOperationBinding.bind(findViewById(R.id.activity_add_operation_root))
         initToolbar()
         binding?.buttonSaveOperation?.setOnClickListener { saveOperation() }
+	//to fun
         binding?.radioGroup?.setOnCheckedChangeListener { group, _ ->
             val (newTitle: String, newType: OperationType) = when (group.checkedRadioButtonId) {
                 R.id.radioButtonConsumption -> ("Расход" to OperationType.EXPENSE)
@@ -55,10 +56,11 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         }
         //todo destructing?
 
+	//todo format
         viewModelCategory.liveDataCategories.observe(
-            this, { categoryEntityList ->
-                categories = categoryEntityList
-            })
+            this, 
+	    { categoryEntityList -> categories = categoryEntityList }
+	)
         viewModelAccount.liveDataAccounts.observe(
             this, { accountEntityList -> accounts = accountEntityList })
     }
@@ -68,9 +70,9 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         binding?.toolbarAddOperation?.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
         binding?.toolbarAddOperation?.setNavigationOnClickListener { onBackPressed() }
         binding?.toolbarAddOperation?.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_check -> saveOperation()
-            }
+            if (it.itemId == R.id.action_check) {
+	    saveOperation()
+	    }
             true
         }
     }
@@ -97,6 +99,7 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         binding?.spinnerAccounts?.setSelection(0)
     }
 
+//todo !!
     private fun saveOperation() {
         val categoryId = categories[binding!!.spinnerCategories.selectedItemPosition].id
         val accountId = accounts[binding!!.spinnerAccounts.selectedItemPosition].id

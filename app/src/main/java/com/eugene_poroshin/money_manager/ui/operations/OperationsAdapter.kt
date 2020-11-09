@@ -17,7 +17,11 @@ class OperationsAdapter(
     communication: FragmentCommunicator
 ) : RecyclerView.Adapter<OperationsAdapter.RecyclerViewHolder>() {
 
-    private var operations: List<Operation>?
+//todo??
+	operations = ArrayList(operationList)
+        communicator = communication
+
+    private val operations: List<Operation>
     private val communicator: FragmentCommunicator
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,6 +35,7 @@ class OperationsAdapter(
         )
     }
 
+//todo !!
     override fun onBindViewHolder(
         holder: RecyclerViewHolder,
         position: Int
@@ -93,7 +98,7 @@ class OperationsAdapter(
         notifyDataSetChanged()
     }
 
-    inner class RecyclerViewHolder(
+    class RecyclerViewHolder(
         itemView: View,
         mCommunicator: FragmentCommunicator
     ) : RecyclerView.ViewHolder(itemView) {
@@ -102,19 +107,16 @@ class OperationsAdapter(
         val textViewAccount: TextView = itemView.findViewById(R.id.itemOperationTextViewAccount)
         val textViewSum: TextView = itemView.findViewById(R.id.itemOperationTextViewSum)
         val textViewCurrency: TextView = itemView.findViewById(R.id.itemOperationTextViewCurrency)
-        private val mCommunication: FragmentCommunicator = mCommunicator
+//todo
+        private val communication: FragmentCommunicator = communicator
 
+//todo viewbinding, bind holder
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
                 val text = operations!![position].category?.name
-                mCommunication.onItemClickListener(text)
+                communication.onItemClickListener(text)
             }
         }
-    }
-
-    init {
-        operations = ArrayList(operationList)
-        communicator = communication
     }
 }

@@ -20,8 +20,7 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
 
     @Inject
     lateinit var viewModel: OperationsViewModel
-
-    private lateinit var adapter: OperationsAdapter
+    
     private var operations: List<Operation> = emptyList()
         set(value) {
             field = value
@@ -31,6 +30,7 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
         override fun onItemClickListener(categoryName: String?) {}
         override fun onItemAccountClickListener(accountEntity: AccountEntity?) {}
     }
+    private val adapter: OperationsAdapter = OperationsAdapter(operations, communicator)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
@@ -42,14 +42,12 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        //todo bind or inflate \/
         binding = FragmentOperationsBinding.bind(view)
-        binding!!.fabAddOperation.setOnClickListener {
+        binding?.fabAddOperation?.setOnClickListener {
             startActivity(Intent(requireActivity(), AddOperationActivity::class.java))
         }
-        adapter = OperationsAdapter(operations, communicator)
-        binding!!.recyclerViewOperations.layoutManager = LinearLayoutManager(activity)
-        binding!!.recyclerViewOperations.adapter = adapter
+        binding?.recyclerViewOperations?.layoutManager = LinearLayoutManager(activity)
+        binding?.recyclerViewOperations?.adapter = adapter
         viewModel.liveDataOperations.observe(viewLifecycleOwner, { operations ->
             this.operations = operations
         })
@@ -57,8 +55,11 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
 
     private fun updateOperationList(operations: List<Operation>) {
         adapter.setOperations(operations)
-        if (operations.isEmpty()) binding!!.textViewPressPlus.visibility = View.VISIBLE
-        else binding!!.textViewPressPlus.visibility = View.GONE
+        binding?.textViewPressPlus?.visibility = if (operations.isEmpty()) {
+	View.VISIBLE
+        } else {
+	View.GONE
+	}
     }
 
     override fun onDestroyView() {
@@ -66,14 +67,7 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
         super.onDestroyView()
     }
 
-    companion object {
-        private var INSTANCE: OperationsFragment? = null
-
-        fun getInstance(): OperationsFragment {
-            return if (INSTANCE == null) {
-                INSTANCE = OperationsFragment()
-                INSTANCE!!
-            } else INSTANCE!!
-        }
+    companion object {        
+        fun getInstance(): OperationsFragment = OperationsFragment()
     }
 }

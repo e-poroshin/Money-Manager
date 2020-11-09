@@ -57,19 +57,17 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         operationList: List<Operation>,
         categoryList: List<CategoryEntity>
     ) {
-        //todo kotlin filter - is it ok? \/
+        //todo kotlin filter - is it ok? \/ groupBy???
 
         val pieEntries: MutableList<PieEntry> = ArrayList()
         val categoryIDs = categoryList.map { categories -> categories.id }
         categoryIDs.forEach { outerLoopCategoryId ->
             var sum = 0.0
             var label: String? = ""
-
-            val expenseOperationsList =
-                operationList.filter { it.operationEntity?.type == OperationType.EXPENSE }
-            val resultOperationsList =
-                expenseOperationsList.filter { it.operationEntity?.categoryId == outerLoopCategoryId }
-            resultOperationsList.forEach {
+	    operationList
+	        .filter { it.operationEntity?.type == OperationType.EXPENSE }
+	        .filter { it.operationEntity?.categoryId == outerLoopCategoryId }
+	        .forEach {
                 sum += it.operationEntity?.sum ?: 0.0
                 label = it.category?.name
             }
@@ -92,15 +90,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         super.onDestroyView()
     }
 
-    companion object {
-        private var INSTANCE: StatisticsFragment? = null
-
-        //todo is it ok, or by lazy?
-        fun getInstance(): StatisticsFragment {
-            return if (INSTANCE == null) {
-                INSTANCE = StatisticsFragment()
-                INSTANCE!!
-            } else INSTANCE!!
-        }
+    companion object {       
+        fun getInstance(): StatisticsFragment = StatisticsFragment()
     }
 }

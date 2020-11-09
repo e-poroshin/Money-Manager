@@ -27,6 +27,28 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnFragmentAction
         onOpenOperationsFragment()
     }
 
+    override fun onOpenAccountsFragment() = openFragmentTab(AccountsFragment.getInstance())
+
+    override fun onOpenOperationsFragment() = openFragmentTab(OperationsFragment.getInstance())
+
+    override fun onOpenCategoriesFragment() = openFragmentTab(CategoriesFragment.getInstance())
+
+    override fun onOpenStatisticsFragment() = openFragmentTab(StatisticsFragment.getInstance())
+
+    override fun onBackPressed() {
+        if (backPressed + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed()
+            finish()
+        } else {
+            Toast.makeText(
+                this, 
+                R.string.backPressed_ru,
+                Toast.LENGTH_SHORT
+            ).show()
+            backPressed = System.currentTimeMillis()
+        }
+    }
+
     private fun initBottomNavigation() {
         binding?.bottomNavigationView?.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -62,27 +84,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnFragmentAction
                 fragment::class.java.simpleName
             )
             .commit()
-    }
-
-    override fun onOpenAccountsFragment() = openFragmentTab(AccountsFragment.getInstance())
-
-    override fun onOpenOperationsFragment() = openFragmentTab(OperationsFragment.getInstance())
-
-    override fun onOpenCategoriesFragment() = openFragmentTab(CategoriesFragment.getInstance())
-
-    override fun onOpenStatisticsFragment() = openFragmentTab(StatisticsFragment.getInstance())
-
-    override fun onBackPressed() {
-        if (backPressed + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed()
-            finish()
-        } else {
-            Toast.makeText(
-                baseContext, R.string.backPressed_ru,
-                Toast.LENGTH_SHORT
-            ).show()
-            backPressed = System.currentTimeMillis()
-        }
     }
 
     companion object {
