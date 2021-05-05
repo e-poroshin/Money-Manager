@@ -8,25 +8,24 @@ import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
 import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 
-class AddAccountActivity : AppCompatActivity() {
+class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
 
-    private lateinit var binding: ActivityAddAccountBinding
+    private var binding: ActivityAddAccountBinding? = null
     private var viewModelAccount: AccountsViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddAccountBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityAddAccountBinding.bind(findViewById(R.id.activity_add_account_root))
         initToolbar()
-        binding.buttonSaveAccount.setOnClickListener { saveAccount() }
+        binding?.buttonSaveAccount?.setOnClickListener { saveAccount() }
         viewModelAccount = ViewModelProvider(this).get(AccountsViewModel::class.java)
     }
 
     private fun initToolbar() {
-        binding.toolbarAddAccount.inflateMenu(R.menu.add_or_edit_account_menu)
-        binding.toolbarAddAccount.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        binding.toolbarAddAccount.setNavigationOnClickListener { onBackPressed() }
-        binding.toolbarAddAccount.setOnMenuItemClickListener {
+        binding?.toolbarAddAccount?.inflateMenu(R.menu.add_or_edit_account_menu)
+        binding?.toolbarAddAccount?.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        binding?.toolbarAddAccount?.setNavigationOnClickListener { onBackPressed() }
+        binding?.toolbarAddAccount?.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_check_account -> saveAccount()
             }
@@ -35,13 +34,13 @@ class AddAccountActivity : AppCompatActivity() {
     }
 
     private fun saveAccount() {
-        val name: String = binding.editTextAccountName.text?.toString()?.capitalize().orEmpty()
-        val balance: Double = binding.editTextBalance.text?.toString()?.toDoubleOrNull() ?: 0.0
+        val name: String = binding?.editTextAccountName?.text?.toString()?.capitalize().orEmpty()
+        val balance: Double = binding?.editTextBalance?.text?.toString()?.toDoubleOrNull() ?: 0.0
         val currency: String =
-            when(binding.editTextCurrency.text?.toString()) {
+            when(binding?.editTextCurrency?.text?.toString()) {
                 null -> "BYN"
                 "" -> "BYN"
-                else -> binding.editTextCurrency.text.toString().toUpperCase()
+                else -> binding?.editTextCurrency?.text.toString().toUpperCase()
             }
         val accountEntity = AccountEntity(name, balance, currency)
         viewModelAccount!!.insert(accountEntity)

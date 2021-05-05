@@ -98,13 +98,6 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     }
 
     companion object {
-        private var INSTANCE: CategoriesFragment? = null
-
-        fun getInstance(): CategoriesFragment {
-            return if(INSTANCE == null) {
-                INSTANCE = CategoriesFragment()
-                INSTANCE!!
-            } else INSTANCE!!
-        }
+        fun getInstance(): CategoriesFragment = CategoriesFragment()
     }
 }

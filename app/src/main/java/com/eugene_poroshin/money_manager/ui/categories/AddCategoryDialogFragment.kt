@@ -2,6 +2,7 @@ package com.eugene_poroshin.money_manager.ui.categories
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -15,18 +16,16 @@ class AddCategoryDialogFragment : DialogFragment(R.layout.dialog_fragment_add_ca
     private var binding: DialogFragmentAddCategoryBinding? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        //todo don't work \/
-        binding = DialogFragmentAddCategoryBinding.bind(requireActivity().findViewById(R.id.dialog_fragment_add_category_root))
+        binding = DialogFragmentAddCategoryBinding.inflate(LayoutInflater.from(context))
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Добавление новой категории")
-        builder.setView(binding!!.root)
+        builder.setView(binding?.root)
             .setPositiveButton("Добавить") { _, _ -> sendBackResult() }
             .setNegativeButton("Отмена", null)
         return builder.create()
     }
 
     private fun sendBackResult() {
-        //todo Fragment Result Listener - is it ok?
         val result = binding?.editTextCategoryName?.text?.toString()?.capitalize()
         when (result) {
             "" -> Toast.makeText(context, "Введите название категории", Toast.LENGTH_SHORT).show()

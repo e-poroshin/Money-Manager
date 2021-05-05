@@ -6,12 +6,14 @@ import androidx.room.Relation
 class Operation {
     @Embedded
     var operationEntity: OperationEntity? = null
+    //todo init not null
 
     @Relation(
         parentColumn = "operation_category_id",
         entityColumn = "category_id",
         entity = CategoryEntity::class
     )
+    //todo init not null
     var category: CategoryEntity? = null
 
     @Relation(
@@ -19,6 +21,7 @@ class Operation {
         entityColumn = "account_id",
         entity = AccountEntity::class
     )
+    //todo init not null
     var account: AccountEntity? = null
 
 }

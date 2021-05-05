@@ -1,121 +1,79 @@
 package com.eugene_poroshin.money_manager.ui.operations
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
+import com.eugene_poroshin.money_manager.databinding.OperationListItemBinding
 import com.eugene_poroshin.money_manager.repo.database.Operation
-import java.util.*
 
 class OperationsAdapter(
-    operationList: List<Operation>,
-    communication: FragmentCommunicator
-) : RecyclerView.Adapter<OperationsAdapter.RecyclerViewHolder>() {
+        private var operations: List<Operation>
+) : RecyclerView.Adapter<OperationsAdapter.OperationViewHolder>() {
 
-//todo??
-	operations = ArrayList(operationList)
-        communicator = communication
-
-    private val operations: List<Operation>
-    private val communicator: FragmentCommunicator
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.operation_list_item, parent, false)
-        return RecyclerViewHolder(
-            view,
-            communicator
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OperationViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemPersonBinding = OperationListItemBinding.inflate(layoutInflater, parent, false)
+        return OperationViewHolder(itemPersonBinding)
     }
 
-//todo !!
     override fun onBindViewHolder(
-        holder: RecyclerViewHolder,
-        position: Int
-    ) {
-        when (operations!![position].category?.id) {
-            1 -> holder.imageViewIcon.setImageResource(R.drawable.group_18)
-            2 -> holder.imageViewIcon.setImageResource(R.drawable.group_19)
-            3 -> holder.imageViewIcon.setImageResource(R.drawable.group_20)
-            4 -> holder.imageViewIcon.setImageResource(R.drawable.group_21)
-            5 -> holder.imageViewIcon.setImageResource(R.drawable.group_22)
-            6 -> holder.imageViewIcon.setImageResource(R.drawable.group_23)
-            7 -> holder.imageViewIcon.setImageResource(R.drawable.group_24)
-            8 -> holder.imageViewIcon.setImageResource(R.drawable.group_25)
-            9 -> holder.imageViewIcon.setImageResource(R.drawable.group_29)
-            else -> holder.imageViewIcon.setImageResource(R.drawable.group_26)
-        }
-        holder.textViewName.text = operations!![position].category?.name
-        holder.textViewAccount.text = operations!![position].account?.name
-        holder.textViewCurrency.text = operations!![position].account?.currency
-        holder.textViewSum.text = operations!![position].operationEntity?.sum.toString()
-        if (operations!![position].operationEntity
-                ?.type == OperationType.EXPENSE
-        ) {
-            holder.textViewSum.setTextColor(
-                ContextCompat.getColor(
-                    holder.textViewSum.context,
-                    R.color.operation_consumption
-                )
-            )
-            holder.textViewCurrency.setTextColor(
-                ContextCompat.getColor(
-                    holder.textViewCurrency.context,
-                    R.color.operation_consumption
-                )
-            )
-        } else if (operations!![position].operationEntity?.type == OperationType.INCOME) {
-            holder.textViewSum.setTextColor(
-                ContextCompat.getColor(
-                    holder.textViewSum.context,
-                    R.color.operation_income
-                )
-            )
-            holder.textViewCurrency.setTextColor(
-                ContextCompat.getColor(
-                    holder.textViewCurrency.context,
-                    R.color.operation_income
-                )
-            )
-        }
-    }
+            holder: OperationViewHolder,
+            position: Int
+    ) = holder.bind(operations[position])
 
-    override fun getItemCount(): Int {
-        return if (operations != null) {
-            operations!!.size
-        } else 0
-    }
+    override fun getItemCount(): Int = operations.size
 
-    fun setOperations(operationList: List<Operation>?) {
+    fun setOperations(operationList: List<Operation>) {
         operations = operationList
         notifyDataSetChanged()
     }
 
-    class RecyclerViewHolder(
-        itemView: View,
-        mCommunicator: FragmentCommunicator
-    ) : RecyclerView.ViewHolder(itemView) {
-        val imageViewIcon: ImageView = itemView.findViewById(R.id.itemOperationImageViewIcon)
-        val textViewName: TextView = itemView.findViewById(R.id.itemOperationTextViewName)
-        val textViewAccount: TextView = itemView.findViewById(R.id.itemOperationTextViewAccount)
-        val textViewSum: TextView = itemView.findViewById(R.id.itemOperationTextViewSum)
-        val textViewCurrency: TextView = itemView.findViewById(R.id.itemOperationTextViewCurrency)
-//todo
-        private val communication: FragmentCommunicator = communicator
+    class OperationViewHolder(
+            private val itemViewBinding: OperationListItemBinding
+    ) : RecyclerView.ViewHolder(itemViewBinding.root) {
 
-//todo viewbinding, bind holder
+        fun bind(operation: Operation) {
+
+            itemViewBinding.itemOperationImageViewIcon.setImageResource(when (operation.category?.id) {
+                1 -> R.drawable.group_18
+                2 -> R.drawable.group_19
+                3 -> R.drawable.group_20
+                4 -> R.drawable.group_21
+                5 -> R.drawable.group_22
+                6 -> R.drawable.group_23
+                7 -> R.drawable.group_24
+                8 -> R.drawable.group_25
+                9 -> R.drawable.group_29
+                else -> R.drawable.group_26
+            })
+
+            itemViewBinding.itemOperationTextViewName.text = operation.category?.name
+            itemViewBinding.itemOperationTextViewAccount.text = operation.account?.name
+            itemViewBinding.itemOperationTextViewCurrency.text = operation.account?.currency
+            itemViewBinding.itemOperationTextViewSum.text = operation.operationEntity?.sum.toString()
+
+            @ColorRes
+            val colorRes = when (operation.operationEntity?.type) {
+                OperationType.EXPENSE -> R.color.operation_consumption
+                OperationType.INCOME -> R.color.operation_income
+                //todo remove elsed
+                else -> R.color.operation_income
+            }
+            @ColorInt
+            val colorInt = ContextCompat.getColor(itemViewBinding.itemOperationTextViewSum.context, colorRes)
+
+            itemViewBinding.itemOperationTextViewSum.setTextColor(colorInt)
+            itemViewBinding.itemOperationTextViewCurrency.setTextColor(colorInt)
+        }
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
-                val text = operations!![position].category?.name
-                communication.onItemClickListener(text)
+//                val text = operations!![position].category?.name
+//                communication.onItemClickListener(text)
             }
         }
     }

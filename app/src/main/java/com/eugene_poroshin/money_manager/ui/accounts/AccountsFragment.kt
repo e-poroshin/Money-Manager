@@ -83,13 +83,7 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
     companion object {
 
         const val ACCOUNT_ENTITY_PARCELABLE_KEY = "ACCOUNT_ENTITY_PARCELABLE_KEY"
-        private var INSTANCE: AccountsFragment? = null
 
-        fun getInstance(): AccountsFragment {
-            return if (INSTANCE == null) {
-                INSTANCE = AccountsFragment()
-                INSTANCE!!
-            } else INSTANCE!!
-        }
+        fun getInstance(): AccountsFragment = AccountsFragment()
     }
 }
