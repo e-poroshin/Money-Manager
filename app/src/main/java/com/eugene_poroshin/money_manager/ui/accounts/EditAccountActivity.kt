@@ -11,9 +11,11 @@ import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
 
     private var binding: ActivityEditAccountBinding? = null
+    //зачем нулабельность
     private var idAccountEntity: Int = 0
 
     private val viewModelAccount: AccountsViewModel? by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
+    //зачем нулабельность
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +28,7 @@ class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
             val accountEntity =
                 receivedIndent.getParcelableExtra(ACCOUNT_ENTITY_PARCELABLE_KEY) as AccountEntity?
             idAccountEntity = accountEntity?.id!!
+            //!!
             binding?.editTextAccountNameNew?.setText(accountEntity.name)
             binding?.editTextBalanceNew?.setText(accountEntity.balance.toString())
             binding?.editTextCurrencyNew?.setText(accountEntity.currency)
@@ -45,6 +48,7 @@ class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
     }
 
     private fun saveAccount() {
+        //этот метод должен быть в viewModel
         val name: String = binding?.editTextAccountNameNew?.text?.toString()?.capitalize().orEmpty()
         val balance: Double = binding?.editTextBalanceNew?.text?.toString()?.toDoubleOrNull() ?: 0.0
         val currency: String =
@@ -53,6 +57,7 @@ class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
                 "" -> "BYN"
                 else -> binding?.editTextCurrencyNew?.text.toString().toUpperCase()
             }
+        //аналогично AddAccountActivity
         val accountEntity = AccountEntity(name, balance, currency, idAccountEntity)
         viewModelAccount?.update(accountEntity)
         finish()

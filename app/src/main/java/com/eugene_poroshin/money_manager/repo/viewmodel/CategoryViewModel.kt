@@ -11,9 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(application: Application) : AndroidViewModel(application) {
+    //Действительно ли нам нужено наследоваться от AndroidViewModel?
 
     private val categoryDao = AppDatabase.getDatabase(application, viewModelScope).categoryDao()
     private val repository = Repository.CategoryRepository(categoryDao)
+    //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
 
     val liveDataCategories: LiveData<List<CategoryEntity>> = repository.allCategories
 

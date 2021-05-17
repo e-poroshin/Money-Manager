@@ -34,6 +34,7 @@ class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
     }
 
     private fun saveAccount() {
+        //это та логика, которая должна быть в viewModel
         val name: String = binding?.editTextAccountName?.text?.toString()?.capitalize().orEmpty()
         val balance: Double = binding?.editTextBalance?.text?.toString()?.toDoubleOrNull() ?: 0.0
         val currency: String =
@@ -42,8 +43,11 @@ class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
                 "" -> "BYN"
                 else -> binding?.editTextCurrency?.text.toString().toUpperCase()
             }
+        //binding?.editTextCurrency?.text?.toString()?.takeIf { it.isNotBlank() }?.toUpperCase() ?: "BYN"
+
         val accountEntity = AccountEntity(name, balance, currency)
         viewModelAccount!!.insert(accountEntity)
+        //!!
         finish()
     }
 }

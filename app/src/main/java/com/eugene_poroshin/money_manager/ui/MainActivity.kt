@@ -16,6 +16,7 @@ import com.eugene_poroshin.money_manager.ui.statistics.StatisticsFragment
 class MainActivity : AppCompatActivity(R.layout.activity_main), OnFragmentActionListener {
 
     private var binding: ActivityMainBinding? = null
+    //зачем нулабельность?
     private var backPressed: Long = 0
     private val sharedPreferences: SharedPreferences by lazy { getPreferences(MODE_PRIVATE) }
 

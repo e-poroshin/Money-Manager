@@ -26,6 +26,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             field = value
             setUpPieChart(field)
         }
+    //Зачем так сложно? Мы, вроде ни где не используем состояние operations и все что делаем, это
+    //присваиваем значение, после чего вызывается setUpPieChart(), правда ли нам нужно это поле?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
@@ -45,6 +47,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private fun setUpPieChart(
             operationList: List<Operation>
     ) {
+        //хорошо бы иметь единый кодстайл для выравниваний
         val pieEntries = operationList
                 .filter { it.operationEntity?.type == OperationType.EXPENSE }
                 .groupBy { it.category?.name }
@@ -58,10 +61,12 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         dataSet.setColors(*ChartColors.MATERIAL_COLORS)
         dataSet.valueTextColor = R.color.colorPrimaryDark
         dataSet.valueTextSize = 14f
+        //можно немного уменьшить код с помощу PieDataSet(pieEntries, "").apply {...
         val data = PieData(dataSet)
         binding?.pieChart?.data = data
         binding?.pieChart?.animateXY(1000, 1000)
         binding?.pieChart?.invalidate()
+        //убрать копипасту binding?.pieChart? с помощью apply
     }
 
     override fun onDestroyView() {

@@ -11,9 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AccountsViewModel(application: Application) : AndroidViewModel(application) {
+    //Действительно ли нам нужено наследоваться от AndroidViewModel?
 
     private val accountDao = AppDatabase.getDatabase(application, viewModelScope).accountDao()
     private val repository = Repository.AccountRepository(accountDao)
+    //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
 
     val liveDataAccounts: LiveData<List<AccountEntity>> = repository.allAccounts
 

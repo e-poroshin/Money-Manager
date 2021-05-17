@@ -23,7 +23,9 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
     lateinit var viewModel: AccountsViewModel
 
     private var adapter: AccountsAdapter? = null
+    //почему бы не использовать lateinit?
     private var accounts: List<AccountEntity> = ArrayList()
+    //зачем нам состояние accounts в фрагменте, если оно используется только в месте, где оно обновляется
     private val communicator = object : FragmentCommunicator {
         override fun onItemClickListener(categoryName: String?) {}
         override fun onItemAccountClickListener(accountEntity: AccountEntity?) {
@@ -50,6 +52,8 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
             adapter!!.setAccounts(accounts)
             binding!!.myToolbar.title = "Баланс: " + getBalance(accounts) + " BYN"
         })
+        //очень плохой вариант использовать такое приведение к не нулабельному типу
+        //!! не используется в нормальных ситуациях
     }
 
     private fun initToolbar() {
@@ -65,6 +69,7 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
             }
             true
         }
+        //!! - плохо
     }
 
     private fun getBalance(accounts: List<AccountEntity>): Double {
@@ -73,6 +78,7 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
             sum += accountEntity.balance
         }
         return sum
+        //return accounts.sumByDouble { it.balance }
     }
 
     override fun onDestroyView() {

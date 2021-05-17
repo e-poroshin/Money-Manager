@@ -100,6 +100,7 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
     }
 
     private fun saveOperation() {
+        //логика для viewModel
         val categoryId = categories[binding?.spinnerCategories?.selectedItemPosition!!].id
         val accountId = accounts[binding?.spinnerAccounts?.selectedItemPosition!!].id
         val date = System.currentTimeMillis()

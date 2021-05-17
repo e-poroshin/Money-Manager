@@ -22,6 +22,7 @@ class AddCategoryDialogFragment : DialogFragment(R.layout.dialog_fragment_add_ca
         builder.setView(binding?.root)
             .setPositiveButton("Добавить") { _, _ -> sendBackResult() }
             .setNegativeButton("Отмена", null)
+        //текст в строковые ресурсы
         return builder.create()
     }
 
@@ -35,6 +36,8 @@ class AddCategoryDialogFragment : DialogFragment(R.layout.dialog_fragment_add_ca
                 dismiss()
             }
         }
+        //копипаста
+        //выносим текст в строковые ресурсы
     }
 
     override fun onDestroyView() {
