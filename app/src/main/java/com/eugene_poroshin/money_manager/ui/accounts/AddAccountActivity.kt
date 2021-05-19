@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
 import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
+import java.util.*
 
 class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
 
@@ -35,19 +35,15 @@ class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
 
     private fun saveAccount() {
         //это та логика, которая должна быть в viewModel
-        val name: String = binding?.editTextAccountName?.text?.toString()?.capitalize().orEmpty()
+        val name: String = binding?.editTextAccountName?.text?.toString()?.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        }.orEmpty()
         val balance: Double = binding?.editTextBalance?.text?.toString()?.toDoubleOrNull() ?: 0.0
-        val currency: String =
-            when(binding?.editTextCurrency?.text?.toString()) {
-                null -> "BYN"
-                "" -> "BYN"
-                else -> binding?.editTextCurrency?.text.toString().toUpperCase()
-            }
-        //binding?.editTextCurrency?.text?.toString()?.takeIf { it.isNotBlank() }?.toUpperCase() ?: "BYN"
+        val currency: String = binding?.editTextCurrency?.text?.toString()
+            ?.takeIf { it.isNotBlank() }?.uppercase(Locale.getDefault()) ?: "BYN"
 
         val accountEntity = AccountEntity(name, balance, currency)
-        viewModelAccount!!.insert(accountEntity)
-        //!!
+        viewModelAccount?.insert(accountEntity)
         finish()
     }
 }

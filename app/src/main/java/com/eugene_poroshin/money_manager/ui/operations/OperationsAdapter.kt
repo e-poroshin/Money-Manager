@@ -71,7 +71,7 @@ class OperationsAdapter(
         }
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
+//                val position = adapterPosition
 //                val text = operations!![position].category?.name
 //                communication.onItemClickListener(text)
             }

@@ -7,7 +7,7 @@ import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentStatisticsBinding
 import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.repo.database.Operation
-import com.eugene_poroshin.money_manager.repo.viewmodel.OperationsViewModel
+import com.eugene_poroshin.money_manager.ui.operations.OperationsViewModel
 import com.eugene_poroshin.money_manager.ui.operations.OperationType
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -21,14 +21,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     private var binding: FragmentStatisticsBinding? = null
 
-    private var operations: List<Operation> = emptyList()
-        set(value) {
-            field = value
-            setUpPieChart(field)
-        }
-    //Зачем так сложно? Мы, вроде ни где не используем состояние operations и все что делаем, это
-    //присваиваем значение, после чего вызывается setUpPieChart(), правда ли нам нужно это поле?
-
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
         super.onCreate(savedInstanceState)
@@ -40,14 +32,11 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         viewModelOperation.liveDataOperations.observe(
                 viewLifecycleOwner,
                 { operationList ->
-                    operations = operationList
+                    setUpPieChart(operationList)
                 })
     }
 
-    private fun setUpPieChart(
-            operationList: List<Operation>
-    ) {
-        //хорошо бы иметь единый кодстайл для выравниваний
+    private fun setUpPieChart(operationList: List<Operation>) {
         val pieEntries = operationList
                 .filter { it.operationEntity?.type == OperationType.EXPENSE }
                 .groupBy { it.category?.name }
@@ -57,16 +46,18 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                 }
                 .filter { pieEntry -> pieEntry.value > 0 }
 
-        val dataSet = PieDataSet(pieEntries, "")
-        dataSet.setColors(*ChartColors.MATERIAL_COLORS)
-        dataSet.valueTextColor = R.color.colorPrimaryDark
-        dataSet.valueTextSize = 14f
-        //можно немного уменьшить код с помощу PieDataSet(pieEntries, "").apply {...
+        val dataSet = PieDataSet(pieEntries, "").apply {
+            setColors(*ChartColors.MATERIAL_COLORS)
+            valueTextColor = R.color.colorPrimaryDark
+            valueTextSize = 14f
+        }
+
         val data = PieData(dataSet)
-        binding?.pieChart?.data = data
-        binding?.pieChart?.animateXY(1000, 1000)
-        binding?.pieChart?.invalidate()
-        //убрать копипасту binding?.pieChart? с помощью apply
+        binding?.pieChart?.apply {
+            this.data = data
+            animateXY(1000, 1000)
+            invalidate()
+        }
     }
 
     override fun onDestroyView() {

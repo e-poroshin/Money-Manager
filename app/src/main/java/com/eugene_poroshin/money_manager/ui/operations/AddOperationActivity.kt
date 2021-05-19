@@ -9,9 +9,8 @@ import com.eugene_poroshin.money_manager.databinding.ActivityAddOperationBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import com.eugene_poroshin.money_manager.repo.database.OperationEntity
-import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
-import com.eugene_poroshin.money_manager.repo.viewmodel.CategoryViewModel
-import com.eugene_poroshin.money_manager.repo.viewmodel.OperationsViewModel
+import com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel
+import com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel
 
 class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) {
 

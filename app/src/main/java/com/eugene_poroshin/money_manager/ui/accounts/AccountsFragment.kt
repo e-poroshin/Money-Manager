@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentAccountsBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
+import com.eugene_poroshin.money_manager.ui.Callback
 import java.util.*
 import javax.inject.Inject
 
@@ -22,13 +21,13 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
     @Inject
     lateinit var viewModel: AccountsViewModel
 
-    private var adapter: AccountsAdapter? = null
-    //почему бы не использовать lateinit?
+    private lateinit var accountsAdapter: AccountsAdapter
     private var accounts: List<AccountEntity> = ArrayList()
     //зачем нам состояние accounts в фрагменте, если оно используется только в месте, где оно обновляется
-    private val communicator = object : FragmentCommunicator {
-        override fun onItemClickListener(categoryName: String?) {}
-        override fun onItemAccountClickListener(accountEntity: AccountEntity?) {
+    private val communicator = object : Callback {
+        override fun onItemClick(categoryName: String?) {}
+
+        override fun onItemAccountClick(accountEntity: AccountEntity?) {
             val intent = Intent(requireActivity(), EditAccountActivity::class.java)
             intent.putExtra(ACCOUNT_ENTITY_PARCELABLE_KEY, accountEntity as Parcelable)
             startActivity(intent)
@@ -44,41 +43,37 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAccountsBinding.bind(view)
         initToolbar()
-        adapter = AccountsAdapter(accounts, communicator)
-        binding!!.recyclerViewAccounts.layoutManager = LinearLayoutManager(activity)
-        binding!!.recyclerViewAccounts.adapter = adapter
+        accountsAdapter = AccountsAdapter(accounts, communicator)
+        binding?.recyclerViewAccounts?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = accountsAdapter
+        }
         viewModel.liveDataAccounts.observe(viewLifecycleOwner, { accountEntities ->
             accounts = accountEntities
-            adapter!!.setAccounts(accounts)
-            binding!!.myToolbar.title = "Баланс: " + getBalance(accounts) + " BYN"
+            accountsAdapter.setAccounts(accounts)
+            binding?.myToolbar?.title = "Баланс: " + getBalance(accounts) + " BYN"
         })
-        //очень плохой вариант использовать такое приведение к не нулабельному типу
-        //!! не используется в нормальных ситуациях
     }
 
     private fun initToolbar() {
-        binding!!.myToolbar.inflateMenu(R.menu.accounts_menu)
-        binding!!.myToolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_add -> startActivity(
-                    Intent(
-                        requireActivity(),
-                        AddAccountActivity::class.java
+        binding?.myToolbar?.apply {
+            inflateMenu(R.menu.accounts_menu)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_add -> startActivity(
+                        Intent(
+                            requireActivity(),
+                            AddAccountActivity::class.java
+                        )
                     )
-                )
+                }
+                true
             }
-            true
         }
-        //!! - плохо
     }
 
     private fun getBalance(accounts: List<AccountEntity>): Double {
-        var sum = 0.0
-        accounts.forEach { accountEntity ->
-            sum += accountEntity.balance
-        }
-        return sum
-        //return accounts.sumByDouble { it.balance }
+        return accounts.sumOf { it.balance }
     }
 
     override fun onDestroyView() {
@@ -87,9 +82,7 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
     }
 
     companion object {
-
         const val ACCOUNT_ENTITY_PARCELABLE_KEY = "ACCOUNT_ENTITY_PARCELABLE_KEY"
-
         fun getInstance(): AccountsFragment = AccountsFragment()
     }
 }

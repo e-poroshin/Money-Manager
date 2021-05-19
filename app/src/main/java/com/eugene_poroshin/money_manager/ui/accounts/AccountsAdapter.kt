@@ -7,82 +7,66 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
+import com.eugene_poroshin.money_manager.databinding.AccountListItemBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
+import com.eugene_poroshin.money_manager.ui.Callback
 
 class AccountsAdapter(
-    accountList: List<AccountEntity>,
-    //в конструкторе всегда передается пустой лист, действительно ли это необходимо?
-    communication: FragmentCommunicator
-    // можно прямо в конструкторе добавить private val, и не создовать дополнительное свойство + определение в  init
-) : RecyclerView.Adapter<AccountsAdapter.RecyclerViewHolder>() {
+    private var accounts: List<AccountEntity>,
+    private val callback: Callback
+) : RecyclerView.Adapter<AccountsAdapter.AccountViewHolder>() {
 
-    private var accounts: List<AccountEntity>?
-    //зачем нулабельность? логически, список аккаунтов существует всегда, просто иногда он пуст
-    private val communicator: FragmentCommunicator
-    //можно избавиться добавив private val у communication
-
-    init {
-        accounts = ArrayList(accountList)
-        //зачем оборачивать?
-        communicator = communication
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.account_list_item, parent, false)
-        return RecyclerViewHolder(view, communicator)
+        return AccountViewHolder(view, callback)
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        when (accounts!![position].id) {
-            1 -> holder.imageViewIcon.setImageResource(R.drawable.group_28)
-            2 -> holder.imageViewIcon.setImageResource(R.drawable.group_27)
+    override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
+        when (accounts[position].id) {
+            ACCOUNT_TYPE_CASH -> holder.imageViewIcon.setImageResource(R.drawable.group_28)
+            ACCOUNT_TYPE_CARD -> holder.imageViewIcon.setImageResource(R.drawable.group_27)
             else -> holder.imageViewIcon.setImageResource(R.drawable.group_29)
-            //на такой случай хорошо бы иметь константы, enum или sealed класс
+            //на такой случай хорошо бы иметь константы, enum или sealed класс - ok?
         }
-        holder.textViewName.text = accounts!![position].name
-        holder.textViewBalance.text = accounts!![position].balance.toString()
-        holder.textViewCurrency.text = accounts!![position].currency
-        //в случаях, когда есть несколько типов viewHolder, bind логика выносится в класс viewHolder в метод bind()
-        //здесь bind логика в onBindViewHolder - не ошибка, т.к. viewHolder один
-        //!! - плохо
+        holder.textViewName.text = accounts[position].name
+        holder.textViewBalance.text = accounts[position].balance.toString()
+        holder.textViewCurrency.text = accounts[position].currency
     }
 
     override fun getItemCount(): Int {
-        return if (accounts != null) {
-            accounts!!.size
-        } else 0
-        //посмотри про работу с нулабельными типами в котлине accounts?.size ?: 0
+        return accounts.size
     }
 
-    fun setAccounts(accountList: List<AccountEntity>?) {
+    fun setAccounts(accountList: List<AccountEntity>) {
         accounts = accountList
         notifyDataSetChanged()
         //вот здесь как раз было бы нормально переопределить set у accounts и выставить его наружу
         //setAccounts больше джавовский кодстайл
     }
 
-    inner class RecyclerViewHolder(itemView: View, mCommunicator: FragmentCommunicator) :
-        RecyclerView.ViewHolder(itemView) {
-        //почему здесь не используешь viewBinding?
-        //нейминг, это скорее AccountViewHolder
+    inner class AccountViewHolder(
+        itemView: View,
+        private val mCommunicator: Callback
+        ) : RecyclerView.ViewHolder(itemView) {
 
-        val imageViewIcon: ImageView = itemView.findViewById(R.id.itemImageViewIcon)
-        val textViewName: TextView = itemView.findViewById(R.id.itemTextViewName)
-        val textViewBalance: TextView = itemView.findViewById(R.id.itemTextViewBalance)
-        val textViewCurrency: TextView = itemView.findViewById(R.id.itemTextViewCurrency)
-        private val mCommunication: FragmentCommunicator = mCommunicator
-        //можно вынести в конструктор добавив private val к mCommunicator
+        private var binding: AccountListItemBinding = AccountListItemBinding.bind(itemView)
+
+        val imageViewIcon: ImageView = binding.itemImageViewIcon
+        val textViewName: TextView = binding.itemTextViewName
+        val textViewBalance: TextView = binding.itemTextViewBalance
+        val textViewCurrency: TextView = binding.itemTextViewCurrency
 
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
-                val accountEntity = accounts!![position]
-                //можно было бы сразу использовать adapterPosition
-                //!!
-                mCommunication.onItemAccountClickListener(accountEntity)
+                val accountEntity = accounts[adapterPosition]
+                mCommunicator.onItemAccountClick(accountEntity)
             }
         }
+    }
+
+    companion object {
+        const val ACCOUNT_TYPE_CASH = 0
+        const val ACCOUNT_TYPE_CARD = 1
     }
 }

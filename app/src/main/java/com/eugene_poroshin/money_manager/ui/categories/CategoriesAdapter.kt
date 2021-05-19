@@ -7,17 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
+import com.eugene_poroshin.money_manager.ui.Callback
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import java.util.*
 
 class CategoriesAdapter(
     categoryList: List<CategoryEntity>,
-    communication: FragmentCommunicator
+    communication: Callback
 ) : RecyclerView.Adapter<CategoriesAdapter.RecyclerViewHolder>() {
 
     private var categories: List<CategoryEntity>?
-    private val communicator: FragmentCommunicator
+    private val callback: Callback
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,7 +27,7 @@ class CategoriesAdapter(
             .inflate(R.layout.category_list_item, parent, false)
         return RecyclerViewHolder(
             view,
-            communicator
+            callback
         )
     }
 
@@ -63,23 +63,22 @@ class CategoriesAdapter(
 
     inner class RecyclerViewHolder(
         itemView: View,
-        mCommunicator: FragmentCommunicator
+        private val mCommunicator: Callback
     ) : RecyclerView.ViewHolder(itemView) {
 
         val imageViewIcon: ImageView = itemView.findViewById(R.id.itemImageView)
         val textViewName: TextView = itemView.findViewById(R.id.itemTextView)
-        private val mCommunication: FragmentCommunicator = mCommunicator
 
         init {
             itemView.setOnClickListener {
                 val text = textViewName.text.toString()
-                mCommunication.onItemClickListener(text)
+                mCommunicator.onItemClick(text)
             }
         }
     }
 
     init {
         categories = ArrayList(categoryList)
-        communicator = communication
+        callback = communication
     }
 }

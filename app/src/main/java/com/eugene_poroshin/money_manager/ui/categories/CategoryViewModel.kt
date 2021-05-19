@@ -1,8 +1,8 @@
-package com.eugene_poroshin.money_manager.repo.viewmodel
+package com.eugene_poroshin.money_manager.ui.categories
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eugene_poroshin.money_manager.repo.Repository
 import com.eugene_poroshin.money_manager.repo.database.AppDatabase
@@ -10,10 +10,9 @@ import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CategoryViewModel(application: Application) : AndroidViewModel(application) {
-    //Действительно ли нам нужено наследоваться от AndroidViewModel?
+class CategoryViewModel(application: Application) : ViewModel() {
 
-    private val categoryDao = AppDatabase.getDatabase(application, viewModelScope).categoryDao()
+    private val categoryDao = AppDatabase.getDatabase(application).categoryDao()
     private val repository = Repository.CategoryRepository(categoryDao)
     //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
 

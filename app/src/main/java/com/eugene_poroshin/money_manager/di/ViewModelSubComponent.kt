@@ -1,8 +1,8 @@
 package com.eugene_poroshin.money_manager.di
 
-import com.eugene_poroshin.money_manager.repo.viewmodel.AccountsViewModel
-import com.eugene_poroshin.money_manager.repo.viewmodel.CategoryViewModel
-import com.eugene_poroshin.money_manager.repo.viewmodel.OperationsViewModel
+import com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel
+import com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel
+import com.eugene_poroshin.money_manager.ui.operations.OperationsViewModel
 import dagger.Subcomponent
 
 @Subcomponent

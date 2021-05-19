@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.eugene_poroshin.money_manager.ui.operations.OperationTypeConverter
-import kotlinx.coroutines.CoroutineScope
 
 @TypeConverters(OperationTypeConverter::class)
 @Database(
@@ -25,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): AppDatabase {
+        fun getDatabase(context: Context): AppDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance

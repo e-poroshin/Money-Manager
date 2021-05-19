@@ -13,4 +13,8 @@
     <string name="statistics_ru">Статистика</string>
     <string name="backPressed_ru">Нажмите дважды для выхода из приложения</string>
     <string name="press_plus_to_add_operation">Изменяйте остатки по счетам\nво вклаке \"Счета\" меню навигации.\n\nДля добавления операции\nнажмите \" + \"</string>
+    <string name="dialog_add_category_title">Добавление новой категории</string>
+    <string name="all_add">Добавить</string>
+    <string name="all_cancel">Отмена</string>
+    <string name="enter_category_name">Введите название категории</string>
 </resources>

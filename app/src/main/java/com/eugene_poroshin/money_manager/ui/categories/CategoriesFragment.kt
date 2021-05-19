@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentCategoriesBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.ui.FragmentCommunicator
-import com.eugene_poroshin.money_manager.ui.OnFragmentActionListener
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
-import com.eugene_poroshin.money_manager.repo.viewmodel.CategoryViewModel
+import com.eugene_poroshin.money_manager.ui.Callback
+import com.eugene_poroshin.money_manager.ui.OnFragmentActionListener
 import java.util.*
 import javax.inject.Inject
 
@@ -24,12 +23,12 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     lateinit var viewModel: CategoryViewModel
 
     private val onFragmentActionListener: OnFragmentActionListener? get() = activity as? OnFragmentActionListener?
-    private var adapter: CategoriesAdapter? = null
+    private var categoriesAdapter: CategoriesAdapter? = null
     private var categories: List<CategoryEntity> = ArrayList()
     private var addCategoryDialogFragment: AddCategoryDialogFragment? = null
-    private val communicator = object : FragmentCommunicator {
-        override fun onItemClickListener(categoryName: String?) {}
-        override fun onItemAccountClickListener(accountEntity: AccountEntity?) {}
+    private val communicator = object : Callback {
+        override fun onItemClick(categoryName: String?) {}
+        override fun onItemAccountClick(accountEntity: AccountEntity?) {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,24 +51,28 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCategoriesBinding.bind(view)
         initToolbar()
-        adapter = CategoriesAdapter(categories, communicator)
-        binding!!.recyclerViewCategories.layoutManager = LinearLayoutManager(activity)
-        binding!!.recyclerViewCategories.adapter = adapter
+        categoriesAdapter = CategoriesAdapter(categories, communicator)
+        binding?.recyclerViewCategories?.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = categoriesAdapter
+        }
         viewModel.liveDataCategories.observe(
             viewLifecycleOwner,
             { categoryEntities ->
                 categories = categoryEntities
-                adapter!!.setCategories(categories)
+                categoriesAdapter?.setCategories(categories)
             })
     }
 
     private fun initToolbar() {
-        binding!!.myToolbar.inflateMenu(R.menu.categories_menu)
-        binding!!.myToolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_add_category -> showAddDialogFragment()
+        binding?.myToolbar?.apply {
+            inflateMenu(R.menu.categories_menu)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_add_category -> showAddDialogFragment()
+                }
+                true
             }
-            true
         }
     }
 

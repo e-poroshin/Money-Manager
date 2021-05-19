@@ -3,14 +3,12 @@ package com.eugene_poroshin.money_manager.ui.operations
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentOperationsBinding
 import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.repo.database.Operation
-import com.eugene_poroshin.money_manager.repo.viewmodel.OperationsViewModel
 import javax.inject.Inject
 
 class OperationsFragment : Fragment(R.layout.fragment_operations) {
