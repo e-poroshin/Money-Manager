@@ -10,8 +10,6 @@ import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentAccountsBinding
 import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import com.eugene_poroshin.money_manager.ui.Callback
-import java.util.*
 import javax.inject.Inject
 
 class AccountsFragment : Fragment(R.layout.fragment_accounts) {
@@ -22,12 +20,9 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
     lateinit var viewModel: AccountsViewModel
 
     private lateinit var accountsAdapter: AccountsAdapter
-    private var accounts: List<AccountEntity> = ArrayList()
-    //зачем нам состояние accounts в фрагменте, если оно используется только в месте, где оно обновляется
-    private val communicator = object : Callback {
-        override fun onItemClick(categoryName: String?) {}
 
-        override fun onItemAccountClick(accountEntity: AccountEntity?) {
+    private val communicator = object : AccountsAdapter.OnAccountItemClick {
+        override fun onItemClick(accountEntity: AccountEntity) {
             val intent = Intent(requireActivity(), EditAccountActivity::class.java)
             intent.putExtra(ACCOUNT_ENTITY_PARCELABLE_KEY, accountEntity as Parcelable)
             startActivity(intent)
@@ -43,15 +38,14 @@ class AccountsFragment : Fragment(R.layout.fragment_accounts) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAccountsBinding.bind(view)
         initToolbar()
-        accountsAdapter = AccountsAdapter(accounts, communicator)
+        accountsAdapter = AccountsAdapter(communicator)
         binding?.recyclerViewAccounts?.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = accountsAdapter
         }
         viewModel.liveDataAccounts.observe(viewLifecycleOwner, { accountEntities ->
-            accounts = accountEntities
-            accountsAdapter.setAccounts(accounts)
-            binding?.myToolbar?.title = "Баланс: " + getBalance(accounts) + " BYN"
+            accountsAdapter.accounts = accountEntities
+            binding?.myToolbar?.title = "Баланс: " + getBalance(accountEntities) + " BYN"
         })
     }
 

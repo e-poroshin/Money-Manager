@@ -35,7 +35,7 @@ class AddCategoryDialogFragment : DialogFragment(R.layout.dialog_fragment_add_ca
             setFragmentResult("requestKey", bundleOf("bundleKey" to result))
             dismiss()
         }
-        //выносим текст в строковые ресурсы - requestKey, bundleKey?
+        //todo выносим текст в константы - requestKey, bundleKey
     }
 
     override fun onDestroyView() {

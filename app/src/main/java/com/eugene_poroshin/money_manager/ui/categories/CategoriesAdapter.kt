@@ -7,17 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
-import com.eugene_poroshin.money_manager.ui.Callback
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
-import java.util.*
 
 class CategoriesAdapter(
-    categoryList: List<CategoryEntity>,
-    communication: Callback
+    private val onCategoryItemClick: OnCategoryItemClick
 ) : RecyclerView.Adapter<CategoriesAdapter.RecyclerViewHolder>() {
 
-    private var categories: List<CategoryEntity>?
-    private val callback: Callback
+    var categories: List<CategoryEntity> = emptyList()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,7 +27,7 @@ class CategoriesAdapter(
             .inflate(R.layout.category_list_item, parent, false)
         return RecyclerViewHolder(
             view,
-            callback
+            onCategoryItemClick
         )
     }
 
@@ -35,7 +35,7 @@ class CategoriesAdapter(
         holder: RecyclerViewHolder,
         position: Int
     ) {
-        when (categories!![position].id) {
+        when (categories[position].id) {
             1 -> holder.imageViewIcon.setImageResource(R.drawable.group_18)
             2 -> holder.imageViewIcon.setImageResource(R.drawable.group_19)
             3 -> holder.imageViewIcon.setImageResource(R.drawable.group_20)
@@ -47,23 +47,16 @@ class CategoriesAdapter(
             9 -> holder.imageViewIcon.setImageResource(R.drawable.group_29)
             else -> holder.imageViewIcon.setImageResource(R.drawable.group_26)
         }
-        holder.textViewName.text = categories!![position].name
+        holder.textViewName.text = categories[position].name
     }
 
     override fun getItemCount(): Int {
-        return if (categories != null) {
-            categories!!.size
-        } else 0
-    }
-
-    fun setCategories(categoryList: List<CategoryEntity>?) {
-        categories = categoryList
-        notifyDataSetChanged()
+        return categories.size
     }
 
     inner class RecyclerViewHolder(
         itemView: View,
-        private val mCommunicator: Callback
+        private val onItemClick: OnCategoryItemClick
     ) : RecyclerView.ViewHolder(itemView) {
 
         val imageViewIcon: ImageView = itemView.findViewById(R.id.itemImageView)
@@ -72,13 +65,12 @@ class CategoriesAdapter(
         init {
             itemView.setOnClickListener {
                 val text = textViewName.text.toString()
-                mCommunicator.onItemClick(text)
+                onItemClick.onItemClick(text)
             }
         }
     }
 
-    init {
-        categories = ArrayList(categoryList)
-        callback = communication
+    interface OnCategoryItemClick {
+        fun onItemClick(categoryName: String)
     }
 }

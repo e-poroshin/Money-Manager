@@ -6,14 +6,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityEditAccountBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
+import java.util.*
 
 class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
 
     private lateinit var binding: ActivityEditAccountBinding
     private var idAccountEntity: Int = 0
-
-    private val viewModelAccount: AccountsViewModel by lazy { ViewModelProvider(this).get(
-        AccountsViewModel::class.java) }
+    private val viewModelAccount: AccountsViewModel by lazy {
+        ViewModelProvider(this).get(AccountsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +47,15 @@ class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
 
     private fun saveAccount() {
         //этот метод должен быть в viewModel
-        val name: String = binding.editTextAccountNameNew.text?.toString()?.capitalize().orEmpty()
+        val name: String = binding.editTextAccountNameNew.text?.toString()
+            ?.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }.orEmpty()
         val balance: Double = binding.editTextBalanceNew.text?.toString()?.toDoubleOrNull() ?: 0.0
-        val currency: String = binding.editTextCurrencyNew.text?.toString()?.takeIf { it.isNotBlank() }?.toUpperCase() ?: "BYN"
+        val currency: String = binding.editTextCurrencyNew.text?.toString()?.takeIf { it.isNotBlank() }
+            ?.uppercase(Locale.getDefault()) ?: "BYN"
         val accountEntity = AccountEntity(name, balance, currency, idAccountEntity)
         viewModelAccount.update(accountEntity)
         finish()

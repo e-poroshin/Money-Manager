@@ -9,17 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.AccountListItemBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import com.eugene_poroshin.money_manager.ui.Callback
 
 class AccountsAdapter(
-    private var accounts: List<AccountEntity>,
-    private val callback: Callback
+    private val onAccountItemClick: OnAccountItemClick
 ) : RecyclerView.Adapter<AccountsAdapter.AccountViewHolder>() {
+
+    var accounts: List<AccountEntity> = emptyList()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.account_list_item, parent, false)
-        return AccountViewHolder(view, callback)
+        return AccountViewHolder(view, onAccountItemClick)
     }
 
     override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
@@ -38,16 +42,9 @@ class AccountsAdapter(
         return accounts.size
     }
 
-    fun setAccounts(accountList: List<AccountEntity>) {
-        accounts = accountList
-        notifyDataSetChanged()
-        //вот здесь как раз было бы нормально переопределить set у accounts и выставить его наружу
-        //setAccounts больше джавовский кодстайл
-    }
-
     inner class AccountViewHolder(
         itemView: View,
-        private val mCommunicator: Callback
+        private val onItemClick: OnAccountItemClick
         ) : RecyclerView.ViewHolder(itemView) {
 
         private var binding: AccountListItemBinding = AccountListItemBinding.bind(itemView)
@@ -60,7 +57,7 @@ class AccountsAdapter(
         init {
             itemView.setOnClickListener {
                 val accountEntity = accounts[adapterPosition]
-                mCommunicator.onItemAccountClick(accountEntity)
+                onItemClick.onItemClick(accountEntity)
             }
         }
     }
@@ -68,5 +65,9 @@ class AccountsAdapter(
     companion object {
         const val ACCOUNT_TYPE_CASH = 0
         const val ACCOUNT_TYPE_CARD = 1
+    }
+
+    interface OnAccountItemClick {
+        fun onItemClick(accountEntity: AccountEntity)
     }
 }

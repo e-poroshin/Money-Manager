@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentCategoriesBinding
 import com.eugene_poroshin.money_manager.di.App
-import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
-import com.eugene_poroshin.money_manager.ui.Callback
 import com.eugene_poroshin.money_manager.ui.OnFragmentActionListener
 import java.util.*
 import javax.inject.Inject
@@ -23,12 +21,11 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     lateinit var viewModel: CategoryViewModel
 
     private val onFragmentActionListener: OnFragmentActionListener? get() = activity as? OnFragmentActionListener?
-    private var categoriesAdapter: CategoriesAdapter? = null
+    private lateinit var categoriesAdapter: CategoriesAdapter
     private var categories: List<CategoryEntity> = ArrayList()
     private var addCategoryDialogFragment: AddCategoryDialogFragment? = null
-    private val communicator = object : Callback {
-        override fun onItemClick(categoryName: String?) {}
-        override fun onItemAccountClick(accountEntity: AccountEntity?) {}
+    private val communicator = object : CategoriesAdapter.OnCategoryItemClick {
+        override fun onItemClick(categoryName: String) {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +48,7 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCategoriesBinding.bind(view)
         initToolbar()
-        categoriesAdapter = CategoriesAdapter(categories, communicator)
+        categoriesAdapter = CategoriesAdapter(communicator)
         binding?.recyclerViewCategories?.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = categoriesAdapter
@@ -59,8 +56,7 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         viewModel.liveDataCategories.observe(
             viewLifecycleOwner,
             { categoryEntities ->
-                categories = categoryEntities
-                categoriesAdapter?.setCategories(categories)
+                categoriesAdapter.categories = categoryEntities
             })
     }
 
