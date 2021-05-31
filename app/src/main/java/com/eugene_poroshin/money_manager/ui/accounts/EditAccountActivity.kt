@@ -2,13 +2,14 @@ package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityEditAccountBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import java.util.*
 
-class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
+class EditAccountActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditAccountBinding
     private var idAccountEntity: Int = 0
@@ -18,10 +19,16 @@ class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditAccountBinding.bind(findViewById(R.id.activity_edit_account_root))
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account)
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModelAccount
+
         initToolbar()
 
-        binding.buttonSaveAccountNew.setOnClickListener { saveAccount() }
+        binding.buttonSaveAccountNew.setOnClickListener {
+            viewModelAccount.updateAccount(binding, idAccountEntity)
+            finish()
+        }
         intent?.let {
             val accountEntity = it.getParcelableExtra(ACCOUNT_ENTITY_PARCELABLE_KEY) as AccountEntity?
             idAccountEntity = accountEntity?.id ?: 0
@@ -38,27 +45,14 @@ class EditAccountActivity : AppCompatActivity(R.layout.activity_edit_account) {
             setNavigationOnClickListener { onBackPressed() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.action_check_account -> saveAccount()
+                    R.id.action_check_account -> {
+                        viewModelAccount.updateAccount(binding, idAccountEntity)
+                        finish()
+                    }
                 }
                 true
             }
         }
-    }
-
-    private fun saveAccount() {
-        //этот метод должен быть в viewModel
-        val name: String = binding.editTextAccountNameNew.text?.toString()
-            ?.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.getDefault()
-                ) else it.toString()
-            }.orEmpty()
-        val balance: Double = binding.editTextBalanceNew.text?.toString()?.toDoubleOrNull() ?: 0.0
-        val currency: String = binding.editTextCurrencyNew.text?.toString()?.takeIf { it.isNotBlank() }
-            ?.uppercase(Locale.getDefault()) ?: "BYN"
-        val accountEntity = AccountEntity(name, balance, currency, idAccountEntity)
-        viewModelAccount.update(accountEntity)
-        finish()
     }
 
     companion object {

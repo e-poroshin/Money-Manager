@@ -1,7 +1,6 @@
 package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,15 +20,15 @@ class AccountsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.account_list_item, parent, false)
-        return AccountViewHolder(view, onAccountItemClick)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val accountListItemBinding = AccountListItemBinding.inflate(layoutInflater, parent, false)
+        return AccountViewHolder(accountListItemBinding, onAccountItemClick)
     }
 
     override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
         when (accounts[position].id) {
-            ACCOUNT_TYPE_CASH -> holder.imageViewIcon.setImageResource(R.drawable.group_28)
-            ACCOUNT_TYPE_CARD -> holder.imageViewIcon.setImageResource(R.drawable.group_27)
+            AccountType.CASH.id -> holder.imageViewIcon.setImageResource(R.drawable.group_28)
+            AccountType.CARD.id -> holder.imageViewIcon.setImageResource(R.drawable.group_27)
             else -> holder.imageViewIcon.setImageResource(R.drawable.group_29)
             //на такой случай хорошо бы иметь константы, enum или sealed класс - ok?
         }
@@ -43,11 +42,9 @@ class AccountsAdapter(
     }
 
     inner class AccountViewHolder(
-        itemView: View,
+        binding: AccountListItemBinding,
         private val onItemClick: OnAccountItemClick
-        ) : RecyclerView.ViewHolder(itemView) {
-
-        private var binding: AccountListItemBinding = AccountListItemBinding.bind(itemView)
+        ) : RecyclerView.ViewHolder(binding.root) {
 
         val imageViewIcon: ImageView = binding.itemImageViewIcon
         val textViewName: TextView = binding.itemTextViewName
@@ -62,9 +59,9 @@ class AccountsAdapter(
         }
     }
 
-    companion object {
-        const val ACCOUNT_TYPE_CASH = 0
-        const val ACCOUNT_TYPE_CARD = 1
+    enum class AccountType(val id: Int) {
+        CASH(0),
+        CARD(1)
     }
 
     interface OnAccountItemClick {

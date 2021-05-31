@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="model"
+            name="viewmodel"
             type="com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel"/>
 
         <import type="android.view.View"/>

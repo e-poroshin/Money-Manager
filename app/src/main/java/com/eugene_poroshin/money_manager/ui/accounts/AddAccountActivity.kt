@@ -2,13 +2,12 @@ package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
-import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import java.util.*
 
-class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
+class AddAccountActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddAccountBinding
     private val viewModelAccount: AccountsViewModel by lazy {
@@ -17,9 +16,15 @@ class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddAccountBinding.bind(findViewById(R.id.activity_add_account_root))
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_account)
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModelAccount
+
         initToolbar()
-        binding.buttonSaveAccount.setOnClickListener { saveAccount() }
+        binding.buttonSaveAccount.setOnClickListener {
+            viewModelAccount.addAccount(binding)
+            finish()
+        }
     }
 
     private fun initToolbar() {
@@ -29,24 +34,13 @@ class AddAccountActivity : AppCompatActivity(R.layout.activity_add_account) {
             setNavigationOnClickListener { onBackPressed() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.action_check_account -> saveAccount()
+                    R.id.action_check_account -> {
+                        viewModelAccount.addAccount(binding)
+                        finish()
+                    }
                 }
                 true
             }
         }
-    }
-
-    private fun saveAccount() {
-        //это та логика, которая должна быть в viewModel
-        val name: String = binding.editTextAccountName.text?.toString()?.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-        }.orEmpty()
-        val balance: Double = binding.editTextBalance.text?.toString()?.toDoubleOrNull() ?: 0.0
-        val currency: String = binding.editTextCurrency.text?.toString()
-            ?.takeIf { it.isNotBlank() }?.uppercase(Locale.getDefault()) ?: "BYN"
-
-        val accountEntity = AccountEntity(name, balance, currency)
-        viewModelAccount.insert(accountEntity)
-        finish()
     }
 }
