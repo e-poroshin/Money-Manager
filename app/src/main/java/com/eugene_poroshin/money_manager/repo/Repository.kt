@@ -2,6 +2,8 @@ package com.eugene_poroshin.money_manager.repo
 
 import androidx.lifecycle.LiveData
 import com.eugene_poroshin.money_manager.repo.database.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 abstract class Repository {
 
@@ -29,7 +31,9 @@ abstract class Repository {
         val allAccounts: LiveData<List<AccountEntity>> = accountDao.allAccounts()
 
         suspend fun insert(accounts: AccountEntity) {
-            accountDao.insert(accounts)
+            withContext(Dispatchers.IO) {
+                accountDao.insert(accounts)
+            }
         }
 
         suspend fun delete(accounts: AccountEntity) {
