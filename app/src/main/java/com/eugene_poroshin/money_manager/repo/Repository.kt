@@ -41,7 +41,9 @@ abstract class Repository {
         }
 
         suspend fun update(accounts: AccountEntity) {
-            accountDao.update(accounts)
+            withContext(Dispatchers.IO) {
+                accountDao.update(accounts)
+            }
         }
     }
 

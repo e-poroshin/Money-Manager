@@ -10,7 +10,7 @@ import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
 class AddAccountActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddAccountBinding
-    private val accountViewModel: AccountsViewModel by lazy {
+    private val accountsViewModel: AccountsViewModel by lazy {
         ViewModelProvider(this).get(AccountsViewModel::class.java)
     }
 
@@ -18,9 +18,9 @@ class AddAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_account)
         binding.lifecycleOwner = this
-        binding.viewModel = accountViewModel
+        binding.viewModel = accountsViewModel
 
-        accountViewModel.finishEvent.observe(this) {
+        accountsViewModel.finishEvent.observe(this) {
             finish()
         }
 
@@ -35,7 +35,7 @@ class AddAccountActivity : AppCompatActivity() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.action_check_account -> {
-                        accountViewModel.addAccount()
+                        accountsViewModel.addAccount()
                     }
                 }
                 true

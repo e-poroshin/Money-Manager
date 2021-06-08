@@ -10,6 +10,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.DialogFragmentAddCategoryBinding
+import com.eugene_poroshin.money_manager.ui.categories.CategoriesFragment.Companion.BUNDLE_KEY
+import com.eugene_poroshin.money_manager.ui.categories.CategoriesFragment.Companion.REQUEST_KEY
 import java.util.*
 
 class AddCategoryDialogFragment : DialogFragment(R.layout.dialog_fragment_add_category) {
@@ -32,10 +34,9 @@ class AddCategoryDialogFragment : DialogFragment(R.layout.dialog_fragment_add_ca
         if (result.isNullOrBlank()) {
             Toast.makeText(context, getString(R.string.enter_category_name), Toast.LENGTH_SHORT).show()
         } else {
-            setFragmentResult("requestKey", bundleOf("bundleKey" to result))
+            setFragmentResult(REQUEST_KEY, bundleOf(BUNDLE_KEY to result))
             dismiss()
         }
-        //todo выносим текст в константы - requestKey, bundleKey
     }
 
     override fun onDestroyView() {

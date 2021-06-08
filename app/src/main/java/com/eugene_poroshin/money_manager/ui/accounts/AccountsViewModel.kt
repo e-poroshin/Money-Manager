@@ -5,15 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
-import com.eugene_poroshin.money_manager.databinding.ActivityEditAccountBinding
 import com.eugene_poroshin.money_manager.repo.Repository
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.AppDatabase
 import com.eugene_poroshin.money_manager.ui.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class AccountsViewModel(application: Application) : ViewModel() {
@@ -52,17 +49,15 @@ class AccountsViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun updateAccount(binding: ActivityEditAccountBinding, idAccountEntity: Int) {
-        val name: String = binding.editTextAccountNameNew.text?.toString()
-            ?.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.getDefault()
-                ) else it.toString()
-            }.orEmpty()
-        val balance: Double = binding.editTextBalanceNew.text?.toString()?.toDoubleOrNull() ?: 0.0
-        val currency: String = binding.editTextCurrencyNew.text?.toString()?.takeIf { it.isNotBlank() }
-            ?.uppercase(Locale.getDefault()) ?: "BYN"
+    fun updateAccount(idAccountEntity: Int) {     //   idAccountEntity???
+        val name = accountName.value?.replaceFirstChar { it.titlecase(Locale.getDefault()) }.orEmpty()
+        val balance = balance.value?.toDoubleOrNull() ?: 0.0
+        val currency = currency.value?.takeIf { it.isNotBlank() }?.uppercase(Locale.getDefault()) ?: "BYN"
+
         val accountEntity = AccountEntity(name, balance, currency, idAccountEntity)
-        update(accountEntity)
+        viewModelScope.launch {
+            repository.update(accountEntity)
+            _finishEvent.call()
+        }
     }
 }

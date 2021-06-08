@@ -8,7 +8,6 @@ import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityAddOperationBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
-import com.eugene_poroshin.money_manager.repo.database.OperationEntity
 import com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel
 import com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel
 
@@ -18,11 +17,11 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
 
     private var type: OperationType = OperationType.EXPENSE
 
-    private val viewModelCategory
+    private val categoryViewModel
             by lazy { ViewModelProvider(this).get(CategoryViewModel::class.java) }
-    private val viewModelAccount
+    private val accountsViewModel
             by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
-    private val viewModelOperation
+    private val operationsViewModel
             by lazy { ViewModelProvider(this).get(OperationsViewModel::class.java) }
 
     private var categories: List<CategoryEntity> = emptyList()
@@ -41,14 +40,18 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         binding = ActivityAddOperationBinding.bind(findViewById(R.id.activity_add_operation_root))
         initToolbar()
         initRadioButtons()
-        binding?.buttonSaveOperation?.setOnClickListener { saveOperation() }
+        binding?.buttonSaveOperation?.setOnClickListener { operationsViewModel.saveOperation() }
 
-        viewModelCategory.liveDataCategories.observe(
-            this, 
-	    { categoryEntityList -> categories = categoryEntityList }
-	)
-        viewModelAccount.liveDataAccounts.observe(
-            this, { accountEntityList -> accounts = accountEntityList })
+        operationsViewModel.finishEvent.observe(this) {
+            finish()
+        }
+
+        categoryViewModel.liveDataCategories.observe(
+            this, { categoryEntityList -> categories = categoryEntityList }
+        )
+        accountsViewModel.liveDataAccounts.observe(
+            this, { accountEntityList -> accounts = accountEntityList }
+        )
     }
 
     private fun initToolbar() {
@@ -57,7 +60,7 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         binding?.toolbarAddOperation?.setNavigationOnClickListener { onBackPressed() }
         binding?.toolbarAddOperation?.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_check) {
-                saveOperation()
+                operationsViewModel.saveOperation()
             }
             true
         }
@@ -96,24 +99,5 @@ class AddOperationActivity : AppCompatActivity(R.layout.activity_add_operation) 
         adapterAccounts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding?.spinnerAccounts?.adapter = adapterAccounts
         binding?.spinnerAccounts?.setSelection(0)
-    }
-
-    private fun saveOperation() {
-        //логика для viewModel
-        val categoryId = categories[binding?.spinnerCategories?.selectedItemPosition!!].id
-        val accountId = accounts[binding?.spinnerAccounts?.selectedItemPosition!!].id
-        val date = System.currentTimeMillis()
-        val sum: Double = binding?.editTextBalance?.text.toString().toDoubleOrNull() ?: 0.0
-        val description: String = binding?.editTextDescription?.text?.toString().orEmpty()
-        val operationEntity = OperationEntity(categoryId, accountId, date, sum, description, type)
-        viewModelOperation.insert(operationEntity)
-        val newSumAccount = accounts[binding?.spinnerAccounts?.selectedItemPosition!!]
-        val currentBalance = accounts[binding?.spinnerAccounts?.selectedItemPosition!!].balance
-        when (type) {
-            OperationType.EXPENSE -> newSumAccount.balance = currentBalance - sum
-            OperationType.INCOME -> newSumAccount.balance = currentBalance + sum
-        }
-        viewModelAccount.update(newSumAccount)
-        finish()
     }
 }

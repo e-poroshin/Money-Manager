@@ -14,10 +14,10 @@ class AccountsAdapter(
 ) : RecyclerView.Adapter<AccountsAdapter.AccountViewHolder>() {
 
     var accounts: List<AccountEntity> = emptyList()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

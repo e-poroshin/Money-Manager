@@ -7,13 +7,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityEditAccountBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import java.util.*
 
 class EditAccountActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditAccountBinding
     private var idAccountEntity: Int = 0
-    private val viewModelAccount: AccountsViewModel by lazy {
+    private val accountsViewModel: AccountsViewModel by lazy {
         ViewModelProvider(this).get(AccountsViewModel::class.java)
     }
 
@@ -21,13 +20,16 @@ class EditAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account)
         binding.lifecycleOwner = this
-        binding.viewmodel = viewModelAccount
+        binding.viewModel = accountsViewModel
+
+        accountsViewModel.finishEvent.observe(this) {
+            finish()
+        }
 
         initToolbar()
 
         binding.buttonSaveAccountNew.setOnClickListener {
-            viewModelAccount.updateAccount(binding, idAccountEntity)
-            finish()
+            accountsViewModel.updateAccount(idAccountEntity)          // TODO idAccountEntity???
         }
         intent?.let {
             val accountEntity = it.getParcelableExtra(ACCOUNT_ENTITY_PARCELABLE_KEY) as AccountEntity?
@@ -46,8 +48,7 @@ class EditAccountActivity : AppCompatActivity() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.action_check_account -> {
-                        viewModelAccount.updateAccount(binding, idAccountEntity)
-                        finish()
+                        accountsViewModel.updateAccount(idAccountEntity)         // TODO idAccountEntity???
                     }
                 }
                 true

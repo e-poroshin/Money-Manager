@@ -18,13 +18,7 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
     @Inject
     lateinit var viewModel: OperationsViewModel
 
-    private var operations: List<Operation> = emptyList()
-        set(value) {
-            field = value
-            updateOperationList(value)
-        }
-
-    private val adapter: OperationsAdapter = OperationsAdapter(operations)
+    private val operationsAdapter: OperationsAdapter = OperationsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
@@ -41,14 +35,14 @@ class OperationsFragment : Fragment(R.layout.fragment_operations) {
             startActivity(Intent(requireActivity(), AddOperationActivity::class.java))
         }
         binding?.recyclerViewOperations?.layoutManager = LinearLayoutManager(activity)
-        binding?.recyclerViewOperations?.adapter = adapter
+        binding?.recyclerViewOperations?.adapter = operationsAdapter
         viewModel.liveDataOperations.observe(viewLifecycleOwner, { operations ->
-            this.operations = operations
+            operationsAdapter.operations = operations
+            updateOperationList(operations)
         })
     }
 
     private fun updateOperationList(operations: List<Operation>) {
-        adapter.setOperations(operations)
         binding?.textViewPressPlus?.visibility = if (operations.isEmpty()) {
             View.VISIBLE
         } else {

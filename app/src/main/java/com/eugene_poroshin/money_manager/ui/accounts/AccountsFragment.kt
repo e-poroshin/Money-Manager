@@ -21,8 +21,6 @@ class AccountsFragment : Fragment() {
     private var binding: FragmentAccountsBinding? = null
 
     private val accountsViewModel: AccountsViewModel by viewModels()
-    // какая разница в инициализации?
-//    by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
 
     private lateinit var accountsAdapter: AccountsAdapter
 
@@ -46,7 +44,7 @@ class AccountsFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_accounts, container, false)
         binding?.lifecycleOwner = this
-        binding?.viewmodel = accountsViewModel
+        binding?.viewModel = accountsViewModel
         return binding?.root
     }
 

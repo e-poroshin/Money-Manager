@@ -10,9 +10,13 @@ import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.OperationListItemBinding
 import com.eugene_poroshin.money_manager.repo.database.Operation
 
-class OperationsAdapter(
-        private var operations: List<Operation>
-) : RecyclerView.Adapter<OperationsAdapter.OperationViewHolder>() {
+class OperationsAdapter() : RecyclerView.Adapter<OperationsAdapter.OperationViewHolder>() {
+
+    var operations: List<Operation> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OperationViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -27,18 +31,13 @@ class OperationsAdapter(
 
     override fun getItemCount(): Int = operations.size
 
-    fun setOperations(operationList: List<Operation>) {
-        operations = operationList
-        notifyDataSetChanged()
-    }
-
     class OperationViewHolder(
             private val itemViewBinding: OperationListItemBinding
     ) : RecyclerView.ViewHolder(itemViewBinding.root) {
 
         fun bind(operation: Operation) {
 
-            itemViewBinding.itemOperationImageViewIcon.setImageResource(when (operation.category?.id) {
+            itemViewBinding.itemOperationImageViewIcon.setImageResource(when (operation.category.id) {
                 1 -> R.drawable.group_18
                 2 -> R.drawable.group_19
                 3 -> R.drawable.group_20
@@ -51,17 +50,15 @@ class OperationsAdapter(
                 else -> R.drawable.group_26
             })
 
-            itemViewBinding.itemOperationTextViewName.text = operation.category?.name
-            itemViewBinding.itemOperationTextViewAccount.text = operation.account?.name
-            itemViewBinding.itemOperationTextViewCurrency.text = operation.account?.currency
-            itemViewBinding.itemOperationTextViewSum.text = operation.operationEntity?.sum.toString()
+            itemViewBinding.itemOperationTextViewName.text = operation.category.name
+            itemViewBinding.itemOperationTextViewAccount.text = operation.account.name
+            itemViewBinding.itemOperationTextViewCurrency.text = operation.account.currency
+            itemViewBinding.itemOperationTextViewSum.text = operation.operationEntity.sum.toString()
 
             @ColorRes
-            val colorRes = when (operation.operationEntity?.type) {
+            val colorRes = when (operation.operationEntity.type) {
                 OperationType.EXPENSE -> R.color.operation_consumption
                 OperationType.INCOME -> R.color.operation_income
-                //todo remove elsed
-                else -> R.color.operation_income
             }
             @ColorInt
             val colorInt = ContextCompat.getColor(itemViewBinding.itemOperationTextViewSum.context, colorRes)
