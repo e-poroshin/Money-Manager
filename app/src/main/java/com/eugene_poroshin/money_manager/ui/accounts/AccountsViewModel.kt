@@ -49,7 +49,7 @@ class AccountsViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun updateAccount(idAccountEntity: Int) {     //   idAccountEntity???
+    fun updateAccount(idAccountEntity: Int) {
         val name = accountName.value?.replaceFirstChar { it.titlecase(Locale.getDefault()) }.orEmpty()
         val balance = balance.value?.toDoubleOrNull() ?: 0.0
         val currency = currency.value?.takeIf { it.isNotBlank() }?.uppercase(Locale.getDefault()) ?: "BYN"

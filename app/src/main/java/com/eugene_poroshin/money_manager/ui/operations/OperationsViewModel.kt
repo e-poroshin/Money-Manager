@@ -3,7 +3,9 @@ package com.eugene_poroshin.money_manager.ui.operations
 import android.app.Application
 import androidx.lifecycle.*
 import com.eugene_poroshin.money_manager.repo.Repository
+import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.AppDatabase
+import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import com.eugene_poroshin.money_manager.repo.database.OperationEntity
 import com.eugene_poroshin.money_manager.ui.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
@@ -11,13 +13,17 @@ import kotlinx.coroutines.launch
 
 class OperationsViewModel(application: Application) : ViewModel() {
 
-    val categorySelectedPosition = MutableLiveData<Int>()
-    val categoryId = MutableLiveData<Int>()
-    val accountId = MutableLiveData<Int>()
-    val date = MutableLiveData<Long>()
-    val sum = MutableLiveData<Double>()
+    val categoryPosition = MutableLiveData<Int>()
+    val accountPosition = MutableLiveData<Int>()
+    val sum = MutableLiveData<String>()
     val description = MutableLiveData<String>()
-    val operationType = MutableLiveData<OperationType>()
+    val isIncome = MutableLiveData<Boolean>()
+    val categories = MutableLiveData<List<CategoryEntity>>()
+    val accounts = MutableLiveData<List<AccountEntity>>()
+
+    private var _isIncome = isIncome.value ?: false
+    private var _categoryPosition = categoryPosition.value ?: 0
+    private var _accountPosition = accountPosition.value ?: 0
 
     private val _finishEvent = SingleLiveEvent<Void>()
     val finishEvent: LiveData<Void> = _finishEvent
@@ -41,20 +47,30 @@ class OperationsViewModel(application: Application) : ViewModel() {
     }
 
     fun saveOperation() {
-        val categoryId = categories[binding?.spinnerCategories?.selectedItemPosition!!].id
-        val accountId = accounts[binding?.spinnerAccounts?.selectedItemPosition!!].id
+        val categoryId = categories.value?.get(_categoryPosition)?.id ?: 0
+        val accountId = accounts.value?.get(_accountPosition)?.id ?: 0
         val date = System.currentTimeMillis()
-        val sum: Double = binding?.editTextBalance?.text.toString().toDoubleOrNull() ?: 0.0
-        val description: String = binding?.editTextDescription?.text?.toString().orEmpty()
+        val sum: Double = sum.value?.toDoubleOrNull() ?: 0.0
+        val description: String = description.value.orEmpty()
+
+        val newSumAccount = accounts.value?.get(_accountPosition)
+        val currentBalance = accounts.value?.get(_accountPosition)?.balance
+        val type: OperationType
+        if (!_isIncome) {
+            if (currentBalance != null) {
+                newSumAccount?.balance = currentBalance - sum
+            }
+            type = OperationType.EXPENSE
+        } else {
+            if (currentBalance != null) {
+                newSumAccount?.balance = currentBalance + sum
+            }
+            type = OperationType.INCOME
+        }
+
         val operationEntity = OperationEntity(categoryId, accountId, date, sum, description, type)
         insert(operationEntity)
 
-        val newSumAccount = accounts[binding?.spinnerAccounts?.selectedItemPosition!!]
-        val currentBalance = accounts[binding?.spinnerAccounts?.selectedItemPosition!!].balance
-        when (type) {
-            OperationType.EXPENSE -> newSumAccount.balance = currentBalance - sum
-            OperationType.INCOME -> newSumAccount.balance = currentBalance + sum
-        }
-        accountsViewModel.update(newSumAccount)
+//        accountsViewModel.update(newSumAccount) //TODO
     }
 }

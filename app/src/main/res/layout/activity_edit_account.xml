@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="idAccountEntity"
+            type="Integer" />
+
+        <variable
             name="viewModel"
             type="com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel"/>
 
@@ -106,7 +110,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:onClick="@{() -> viewModel.updateAccount()}"
+            android:onClick="@{() -> viewModel.updateAccount(idAccountEntity)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextCurrencyNew" />

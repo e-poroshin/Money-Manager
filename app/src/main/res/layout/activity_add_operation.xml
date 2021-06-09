@@ -7,7 +7,17 @@
             name="viewModel"
             type="com.eugene_poroshin.money_manager.ui.operations.OperationsViewModel"/>
 
+        <variable
+            name="categories"
+            type="java.util.List&lt;CategoryEntity&gt;" />
+
+        <variable
+            name="accounts"
+            type="java.util.List&lt;AccountEntity&gt;" />
+
         <import type="android.view.View"/>
+        <import type="com.eugene_poroshin.money_manager.repo.database.CategoryEntity"/>
+        <import type="com.eugene_poroshin.money_manager.repo.database.AccountEntity"/>
 
     </data>
 
@@ -33,7 +43,7 @@
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +53,7 @@
                 android:id="@+id/radioButtonConsumption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="@={viewModel.isIncome}"
                 android:text="Расход"
                 android:textSize="14sp" />
 
@@ -51,8 +61,7 @@
                 android:id="@+id/radioButtonIncome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:checked="false"
+                android:layout_marginStart="20dp"
                 android:text="Доход"
                 android:textSize="14sp" />
 
@@ -62,9 +71,9 @@
             android:id="@+id/textViewSelectCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:text="Выберите категорию:"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -78,7 +87,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            app:spinnerClicks="@={viewModel.categorySelectedPosition}"
+            app:categoriesSpinnerClicks="@={viewModel.categoryPosition}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSelectCategory" />
 
@@ -86,9 +95,9 @@
             android:id="@+id/textViewSelectAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:text="Выберите счет:"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -102,6 +111,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
+            app:accountsSpinnerClicks="@={viewModel.accountPosition}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSelectAccount" />
 
@@ -109,9 +119,9 @@
             android:id="@+id/textViewAddBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:text="Введите сумму:"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -125,6 +135,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
+            android:text="@={viewModel.sum}"
             android:hint="Сумма"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -137,6 +148,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
+            android:text="@={viewModel.description}"
             android:hint="Описание (опционально)"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"

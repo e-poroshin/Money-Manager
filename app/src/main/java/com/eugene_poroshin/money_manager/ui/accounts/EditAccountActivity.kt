@@ -28,9 +28,6 @@ class EditAccountActivity : AppCompatActivity() {
 
         initToolbar()
 
-        binding.buttonSaveAccountNew.setOnClickListener {
-            accountsViewModel.updateAccount(idAccountEntity)          // TODO idAccountEntity???
-        }
         intent?.let {
             val accountEntity = it.getParcelableExtra(ACCOUNT_ENTITY_PARCELABLE_KEY) as AccountEntity?
             idAccountEntity = accountEntity?.id ?: 0
@@ -38,6 +35,7 @@ class EditAccountActivity : AppCompatActivity() {
             binding.editTextBalanceNew.setText(accountEntity?.balance.toString())
             binding.editTextCurrencyNew.setText(accountEntity?.currency)
         }
+        binding.idAccountEntity = idAccountEntity
     }
 
     private fun initToolbar() {
@@ -48,7 +46,7 @@ class EditAccountActivity : AppCompatActivity() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.action_check_account -> {
-                        accountsViewModel.updateAccount(idAccountEntity)         // TODO idAccountEntity???
+                        accountsViewModel.updateAccount(idAccountEntity)
                     }
                 }
                 true

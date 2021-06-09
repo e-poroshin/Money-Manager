@@ -27,7 +27,7 @@ class AccountsFragment : Fragment() {
     private val onItemClick = object : AccountsAdapter.OnAccountItemClick {
         override fun onItemClick(accountEntity: AccountEntity) {
             val intent = Intent(requireActivity(), EditAccountActivity::class.java)
-            intent.putExtra(ACCOUNT_ENTITY_PARCELABLE_KEY, accountEntity as Parcelable)
+            intent.putExtra(ACCOUNT_ENTITY_PARCELABLE_KEY, accountEntity)
             startActivity(intent)
         }
     }
