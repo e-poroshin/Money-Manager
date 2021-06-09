@@ -17,4 +17,12 @@
     <string name="all_add">Добавить</string>
     <string name="all_cancel">Отмена</string>
     <string name="enter_category_name">Введите название категории</string>
+    <string name="save_ru">Сохранить</string>
+    <string name="description_ru">Описание (опционально)</string>
+    <string name="sum_ru">Сумма</string>
+    <string name="consumption_ru">Расход</string>
+    <string name="income_ru">Доход</string>
+    <string name="select_category_ru">Выберите категорию:</string>
+    <string name="select_account_ru">Выберите счет:</string>
+    <string name="enter_sum_ru">Введите сумму:</string>
 </resources>

@@ -2,7 +2,6 @@ package com.eugene_poroshin.money_manager.ui.accounts
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentAccountsBinding
-import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 
 

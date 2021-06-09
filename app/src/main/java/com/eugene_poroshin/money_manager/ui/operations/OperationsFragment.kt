@@ -4,24 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentOperationsBinding
-import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.repo.database.Operation
-import javax.inject.Inject
 
 class OperationsFragment : Fragment(R.layout.fragment_operations) {
 
     private var binding: FragmentOperationsBinding? = null
 
-    @Inject
-    lateinit var viewModel: OperationsViewModel
+    private val viewModel: OperationsViewModel by viewModels()
 
     private val operationsAdapter: OperationsAdapter = OperationsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
         super.onCreate(savedInstanceState)
     }
 

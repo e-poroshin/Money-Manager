@@ -16,29 +16,29 @@ class AddOperationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddOperationBinding
 
-    private val categoryViewModel
-            by lazy { ViewModelProvider(this).get(CategoryViewModel::class.java) }
-    private val accountsViewModel
-            by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
+//    private val categoryViewModel
+//            by lazy { ViewModelProvider(this).get(CategoryViewModel::class.java) }
+//    private val accountsViewModel
+//            by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
     private val operationsViewModel
             by lazy { ViewModelProvider(this).get(OperationsViewModel::class.java) }
 
-    private var categories: List<CategoryEntity> = emptyList()
-        set(value) {
-            field = value
-            updateCategoriesSpinner(value)
-        }
-    private var accounts: List<AccountEntity> = emptyList()
-        set(value) {
-            field = value
-            updateAccountsSpinner(value)
-        }
+//    private var categories: List<CategoryEntity> = emptyList()
+//        set(value) {
+//            field = value
+//            updateCategoriesSpinner(value)
+//        }
+//    private var accounts: List<AccountEntity> = emptyList()
+//        set(value) {
+//            field = value
+//            updateAccountsSpinner(value)
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_operation)
         binding.lifecycleOwner = this
-        binding.viewModel = operationsViewModel
+        binding.operationsViewModel = operationsViewModel
 
         initToolbar()
         initRadioButtons()
@@ -48,18 +48,18 @@ class AddOperationActivity : AppCompatActivity() {
             finish()
         }
 
-        categoryViewModel.liveDataCategories.observe(
-            this, { categoryEntityList ->
-                categories = categoryEntityList
-                binding.categories = categories
-            }
-        )
-        accountsViewModel.liveDataAccounts.observe(
-            this, { accountEntityList ->
-                accounts = accountEntityList
-                binding.accounts = accounts
-            }
-        )
+//        categoryViewModel.liveDataCategories.observe(
+//            this, { categoryEntityList ->
+//                categories = categoryEntityList
+//                binding.categories = categories
+//            }
+//        )
+//        accountsViewModel.liveDataAccounts.observe(
+//            this, { accountEntityList ->
+//                accounts = accountEntityList
+//                binding.accounts = accounts
+//            }
+//        )
     }
 
     private fun initToolbar() {
@@ -84,27 +84,5 @@ class AddOperationActivity : AppCompatActivity() {
             }
             binding.toolbarAddOperation.title = newTitle
         }
-    }
-
-    private fun updateCategoriesSpinner(value: List<CategoryEntity>) {
-        val adapterCategories = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            value.map { categoryList -> categoryList.name }
-        )
-        adapterCategories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerCategories.adapter = adapterCategories
-        binding.spinnerCategories.setSelection(0)
-    }
-
-    private fun updateAccountsSpinner(value: List<AccountEntity>) {
-        val adapterAccounts = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            value.map { accountList -> accountList.name }
-        )
-        adapterAccounts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerAccounts.adapter = adapterAccounts
-        binding.spinnerAccounts.setSelection(0)
     }
 }

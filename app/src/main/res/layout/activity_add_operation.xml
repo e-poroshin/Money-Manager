@@ -4,20 +4,18 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="operationsViewModel"
             type="com.eugene_poroshin.money_manager.ui.operations.OperationsViewModel"/>
 
         <variable
-            name="categories"
-            type="java.util.List&lt;CategoryEntity&gt;" />
+            name="categoryViewModel"
+            type="com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel"/>
 
         <variable
-            name="accounts"
-            type="java.util.List&lt;AccountEntity&gt;" />
+            name="accountsViewModel"
+            type="com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel"/>
 
         <import type="android.view.View"/>
-        <import type="com.eugene_poroshin.money_manager.repo.database.CategoryEntity"/>
-        <import type="com.eugene_poroshin.money_manager.repo.database.AccountEntity"/>
 
     </data>
 
@@ -53,8 +51,8 @@
                 android:id="@+id/radioButtonConsumption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@={viewModel.isIncome}"
-                android:text="Расход"
+                android:checked="@={operationsViewModel.isIncome}"
+                android:text="@string/consumption_ru"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -62,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Доход"
+                android:text="@string/income_ru"
                 android:textSize="14sp" />
 
         </RadioGroup>
@@ -74,7 +72,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:text="Выберите категорию:"
+            android:text="@string/select_category_ru"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +85,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            app:categoriesSpinnerClicks="@={viewModel.categoryPosition}"
+            app:categoriesEntries="@={categoryViewModel.liveDataCategories}"
+            app:categoriesSpinnerClicks="@={operationsViewModel.categoryPosition}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSelectCategory" />
 
@@ -98,7 +97,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="20dp"
-            android:text="Выберите счет:"
+            android:text="@string/select_account_ru"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +110,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            app:accountsSpinnerClicks="@={viewModel.accountPosition}"
+            app:accountsEntries="@={accountsViewModel.liveDataAccounts}"
+            app:accountsSpinnerClicks="@={operationsViewModel.accountPosition}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSelectAccount" />
 
@@ -122,7 +122,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="20dp"
-            android:text="Введите сумму:"
+            android:text="@string/enter_sum_ru"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,8 +135,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:text="@={viewModel.sum}"
-            android:hint="Сумма"
+            android:text="@={operationsViewModel.sum}"
+            android:hint="@string/sum_ru"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAddBalance" />
@@ -148,8 +148,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:text="@={viewModel.description}"
-            android:hint="Описание (опционально)"
+            android:text="@={operationsViewModel.description}"
+            android:hint="@string/description_ru"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextBalance" />
@@ -161,11 +161,11 @@
             android:layout_marginLeft="70dp"
             android:layout_marginRight="70dp"
             android:background="@drawable/res_background_round_rect_red"
-            android:text="Сохранить"
+            android:text="@string/save_ru"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:onClick="@{()->viewModel.saveOperation()}"
+            android:onClick="@{()->operationsViewModel.saveOperation()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

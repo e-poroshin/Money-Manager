@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentCategoriesBinding
-import com.eugene_poroshin.money_manager.di.App
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import com.eugene_poroshin.money_manager.ui.OnFragmentActionListener
 
@@ -26,7 +25,6 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
         super.onCreate(savedInstanceState)
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
             val result = bundle.getString(BUNDLE_KEY)
