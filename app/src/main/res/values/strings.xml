@@ -25,4 +25,5 @@
     <string name="select_category_ru">Выберите категорию:</string>
     <string name="select_account_ru">Выберите счет:</string>
     <string name="enter_sum_ru">Введите сумму:</string>
+    <string name="database">db_save_money.db</string>
 </resources>

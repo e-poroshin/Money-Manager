@@ -2,7 +2,7 @@ package com.eugene_poroshin.money_manager.ui.operations
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.eugene_poroshin.money_manager.repo.Repository
+import com.eugene_poroshin.money_manager.repo.OperationRepository
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.AppDatabase
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
@@ -29,7 +29,7 @@ class OperationsViewModel(application: Application) : ViewModel() {
     val finishEvent: LiveData<Void> = _finishEvent
 
     private val operationDao = AppDatabase.getDatabase(application).operationDao()
-    private val operationRepository = Repository.OperationRepository(operationDao)
+    private val operationRepository = OperationRepository(operationDao)
     //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
 
     val liveDataOperations = operationRepository.allOperations

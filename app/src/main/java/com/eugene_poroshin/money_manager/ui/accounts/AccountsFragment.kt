@@ -7,18 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentAccountsBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
+import org.koin.android.viewmodel.ext.android.getViewModel
 
 
 class AccountsFragment : Fragment() {
 
     private var binding: FragmentAccountsBinding? = null
 
-    private val accountsViewModel: AccountsViewModel by viewModels()
+    private val accountsViewModel = getViewModel<AccountsViewModel>()
 
     private lateinit var accountsAdapter: AccountsAdapter
 
@@ -28,11 +28,6 @@ class AccountsFragment : Fragment() {
             intent.putExtra(ACCOUNT_ENTITY_PARCELABLE_KEY, accountEntity)
             startActivity(intent)
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.fragmentSubComponentBuilder().with(this).build().inject(this)
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

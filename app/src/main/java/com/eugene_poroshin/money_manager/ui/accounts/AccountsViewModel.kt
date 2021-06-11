@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eugene_poroshin.money_manager.repo.Repository
+import com.eugene_poroshin.money_manager.repo.AccountRepository
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.AppDatabase
 import com.eugene_poroshin.money_manager.ui.SingleLiveEvent
@@ -23,7 +23,7 @@ class AccountsViewModel(application: Application) : ViewModel() {
     val finishEvent: LiveData<Void> = _finishEvent
 
     private val accountDao = AppDatabase.getDatabase(application).accountDao()
-    private val repository = Repository.AccountRepository(accountDao)
+    private val repository = AccountRepository(accountDao)
     //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
 
     val liveDataAccounts: LiveData<List<AccountEntity>> = repository.allAccounts

@@ -36,7 +36,7 @@ fun setCategorySelectedItem(spinner: Spinner, position: Int) {
 }
 
 @BindingAdapter("categoriesSpinnerClicks")
-fun getCategorySelectedItem(spinner: Spinner) = spinner.selectedItemPosition
+fun getCategorySelectedItem(spinner: Spinner, position: Int) = spinner.selectedItemPosition
 
 
 @BindingAdapter("accountsSpinnerClicksAttrChanged")
@@ -58,7 +58,7 @@ fun setAccountSelectedItem(spinner: Spinner, position: Int) {
 }
 
 @BindingAdapter("accountsSpinnerClicks")
-fun getAccountSelectedItem(spinner: Spinner) = spinner.selectedItemPosition
+fun getAccountSelectedItem(spinner: Spinner, position: Int) = spinner.selectedItemPosition
 
 
 @BindingAdapter("categoriesEntries")
