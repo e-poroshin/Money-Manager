@@ -3,16 +3,14 @@ package com.eugene_poroshin.money_manager.ui.accounts
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityAddAccountBinding
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddAccountActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddAccountBinding
-    private val accountsViewModel: AccountsViewModel by lazy {
-        ViewModelProvider(this).get(AccountsViewModel::class.java)
-    }
+    private val accountsViewModel: AccountsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

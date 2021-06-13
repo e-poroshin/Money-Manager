@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityMainBinding
@@ -13,17 +14,16 @@ import com.eugene_poroshin.money_manager.ui.categories.CategoriesFragment
 import com.eugene_poroshin.money_manager.ui.operations.OperationsFragment
 import com.eugene_poroshin.money_manager.ui.statistics.StatisticsFragment
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), OnFragmentActionListener {
+class MainActivity : AppCompatActivity(), OnFragmentActionListener {
 
-    private var binding: ActivityMainBinding? = null
-    //зачем нулабельность?
+    private lateinit var binding: ActivityMainBinding
     private var backPressed: Long = 0
     private val sharedPreferences: SharedPreferences by lazy { getPreferences(MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         openStartScreenIfNeeded() //splash screen on first visit
-        binding = ActivityMainBinding.bind(findViewById(R.id.activity_main_root))
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initBottomNavigation()
         onOpenOperationsFragment()
     }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnFragmentAction
     }
 
     private fun initBottomNavigation() {
-        binding?.bottomNavigationView?.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_categories -> onOpenCategoriesFragment()
                 R.id.action_accounts -> onOpenAccountsFragment()

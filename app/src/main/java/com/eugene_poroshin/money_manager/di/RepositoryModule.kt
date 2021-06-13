@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.di.module
+package com.eugene_poroshin.money_manager.di
 
 import com.eugene_poroshin.money_manager.repo.AccountRepository
 import com.eugene_poroshin.money_manager.repo.CategoryRepository

@@ -1,20 +1,17 @@
 package com.eugene_poroshin.money_manager.ui.accounts
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eugene_poroshin.money_manager.repo.AccountRepository
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import com.eugene_poroshin.money_manager.repo.database.AppDatabase
 import com.eugene_poroshin.money_manager.ui.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AccountsViewModel(application: Application) : ViewModel() {
-    //нам нужен будет только Репо
+class AccountsViewModel(private val repository: AccountRepository) : ViewModel() {
+
     val accountName = MutableLiveData<String>()
     val balance = MutableLiveData<String>()
     val currency = MutableLiveData<String>()
@@ -22,17 +19,13 @@ class AccountsViewModel(application: Application) : ViewModel() {
     private val _finishEvent = SingleLiveEvent<Void>()
     val finishEvent: LiveData<Void> = _finishEvent
 
-    private val accountDao = AppDatabase.getDatabase(application).accountDao()
-    private val repository = AccountRepository(accountDao)
-    //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
-
     val liveDataAccounts: LiveData<List<AccountEntity>> = repository.allAccounts
 
-    fun update(accounts: AccountEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun update(accounts: AccountEntity) = viewModelScope.launch {
         repository.update(accounts)
     }
 
-    fun delete(accounts: AccountEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun delete(accounts: AccountEntity) = viewModelScope.launch {
         repository.delete(accounts)
     }
 

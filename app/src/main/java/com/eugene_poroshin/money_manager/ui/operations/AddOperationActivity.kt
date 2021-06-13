@@ -1,16 +1,11 @@
 package com.eugene_poroshin.money_manager.ui.operations
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityAddOperationBinding
-import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
-import com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel
-import com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddOperationActivity : AppCompatActivity() {
 
@@ -20,8 +15,7 @@ class AddOperationActivity : AppCompatActivity() {
 //            by lazy { ViewModelProvider(this).get(CategoryViewModel::class.java) }
 //    private val accountsViewModel
 //            by lazy { ViewModelProvider(this).get(AccountsViewModel::class.java) }
-    private val operationsViewModel
-            by lazy { ViewModelProvider(this).get(OperationsViewModel::class.java) }
+    private val operationsViewModel: OperationsViewModel by viewModel()
 
 //    private var categories: List<CategoryEntity> = emptyList()
 //        set(value) {

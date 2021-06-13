@@ -3,6 +3,8 @@ package com.eugene_poroshin.money_manager.repo
 import androidx.lifecycle.LiveData
 import com.eugene_poroshin.money_manager.repo.database.CategoryDao
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CategoryRepository(private val categoryDao: CategoryDao) {
 
@@ -10,14 +12,20 @@ class CategoryRepository(private val categoryDao: CategoryDao) {
     val allCategories: LiveData<List<CategoryEntity>> = categoryDao.allCategories()
 
     suspend fun insert(category: CategoryEntity) {
-        categoryDao.insert(category)
+        withContext(Dispatchers.IO) {
+            categoryDao.insert(category)
+        }
     }
 
     suspend fun delete(category: CategoryEntity) {
-        categoryDao.delete(category)
+        withContext(Dispatchers.IO) {
+            categoryDao.delete(category)
+        }
     }
 
     suspend fun update(category: CategoryEntity) {
-        categoryDao.update(category)
+        withContext(Dispatchers.IO) {
+            categoryDao.update(category)
+        }
     }
 }

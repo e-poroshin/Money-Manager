@@ -1,4 +1,4 @@
-package com.eugene_poroshin.money_manager.di.module
+package com.eugene_poroshin.money_manager.di
 
 import com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel
 import com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel

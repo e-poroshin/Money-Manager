@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
@@ -35,8 +36,8 @@ fun setCategorySelectedItem(spinner: Spinner, position: Int) {
     }
 }
 
-@BindingAdapter("categoriesSpinnerClicks")
-fun getCategorySelectedItem(spinner: Spinner, position: Int) = spinner.selectedItemPosition
+@InverseBindingAdapter(attribute = "categoriesSpinnerClicks")
+fun getCategorySelectedItem(spinner: Spinner) = spinner.selectedItemPosition
 
 
 @BindingAdapter("accountsSpinnerClicksAttrChanged")
@@ -57,8 +58,8 @@ fun setAccountSelectedItem(spinner: Spinner, position: Int) {
     }
 }
 
-@BindingAdapter("accountsSpinnerClicks")
-fun getAccountSelectedItem(spinner: Spinner, position: Int) = spinner.selectedItemPosition
+@InverseBindingAdapter(attribute = "accountsSpinnerClicks")
+fun getAccountSelectedItem(spinner: Spinner) = spinner.selectedItemPosition
 
 
 @BindingAdapter("categoriesEntries")

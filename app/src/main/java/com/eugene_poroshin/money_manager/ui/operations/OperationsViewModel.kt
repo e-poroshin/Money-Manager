@@ -1,17 +1,17 @@
 package com.eugene_poroshin.money_manager.ui.operations
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.eugene_poroshin.money_manager.repo.OperationRepository
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import com.eugene_poroshin.money_manager.repo.database.AppDatabase
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import com.eugene_poroshin.money_manager.repo.database.OperationEntity
 import com.eugene_poroshin.money_manager.ui.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class OperationsViewModel(application: Application) : ViewModel() {
+class OperationsViewModel(private val operationRepository: OperationRepository) : ViewModel() {
 
     val categoryPosition = MutableLiveData<Int>()
     val accountPosition = MutableLiveData<Int>()
@@ -28,21 +28,17 @@ class OperationsViewModel(application: Application) : ViewModel() {
     private val _finishEvent = SingleLiveEvent<Void>()
     val finishEvent: LiveData<Void> = _finishEvent
 
-    private val operationDao = AppDatabase.getDatabase(application).operationDao()
-    private val operationRepository = OperationRepository(operationDao)
-    //как-то странно, у нас есть DI но он не используется, создаем сущности внутри класса - нехорошо
-
     val liveDataOperations = operationRepository.allOperations
 
-    fun insert(operations: OperationEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(operations: OperationEntity) = viewModelScope.launch {
         operationRepository.insert(operations)
     }
 
-    fun update(operations: OperationEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun update(operations: OperationEntity) = viewModelScope.launch {
         operationRepository.update(operations)
     }
 
-    fun delete(operations: OperationEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun delete(operations: OperationEntity) = viewModelScope.launch {
         operationRepository.delete(operations)
     }
 

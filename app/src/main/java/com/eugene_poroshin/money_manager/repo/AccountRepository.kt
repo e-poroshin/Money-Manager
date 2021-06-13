@@ -17,7 +17,9 @@ class AccountRepository(private val accountDao: AccountDao) {
     }
 
     suspend fun delete(accounts: AccountEntity) {
-        accountDao.delete(accounts)
+        withContext(Dispatchers.IO) {
+            accountDao.delete(accounts)
+        }
     }
 
     suspend fun update(accounts: AccountEntity) {

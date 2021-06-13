@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentAccountsBinding
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
-import org.koin.android.viewmodel.ext.android.getViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class AccountsFragment : Fragment() {
 
     private var binding: FragmentAccountsBinding? = null
 
-    private val accountsViewModel = getViewModel<AccountsViewModel>()
+    private val accountsViewModel: AccountsViewModel by viewModel()
 
     private lateinit var accountsAdapter: AccountsAdapter
 

@@ -1,21 +1,24 @@
 package com.eugene_poroshin.money_manager.ui.categories
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.FragmentCategoriesBinding
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import com.eugene_poroshin.money_manager.ui.OnFragmentActionListener
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class CategoriesFragment : Fragment(R.layout.fragment_categories) {
+class CategoriesFragment : Fragment() {
 
     private var binding: FragmentCategoriesBinding? = null
 
-    private val categoryViewModel: CategoryViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModel()
 
     private val onFragmentActionListener: OnFragmentActionListener? get() = activity as? OnFragmentActionListener?
     private lateinit var categoriesAdapter: CategoriesAdapter
@@ -36,12 +39,20 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_categories, container, false)
+        return binding?.root
+    }
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentCategoriesBinding.bind(view)
         initToolbar()
         categoriesAdapter = CategoriesAdapter(onItemClick)
         binding?.recyclerViewCategories?.apply {

@@ -23,7 +23,7 @@ class CategoriesAdapter(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context) //todo binding
             .inflate(R.layout.category_list_item, parent, false)
         return RecyclerViewHolder(
             view,
