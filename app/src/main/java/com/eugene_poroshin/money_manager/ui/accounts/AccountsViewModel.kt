@@ -10,7 +10,7 @@ import com.eugene_poroshin.money_manager.ui.SingleLiveEvent
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AccountsViewModel(private val repository: AccountRepository) : ViewModel() {
+class AccountsViewModel(private val accountRepository: AccountRepository) : ViewModel() {
 
     val accountName = MutableLiveData<String>()
     val balance = MutableLiveData<String>()
@@ -19,17 +19,16 @@ class AccountsViewModel(private val repository: AccountRepository) : ViewModel()
     private val _finishEvent = SingleLiveEvent<Void>()
     val finishEvent: LiveData<Void> = _finishEvent
 
-    val liveDataAccounts: LiveData<List<AccountEntity>> = repository.allAccounts
+    val liveDataAccounts: LiveData<List<AccountEntity>> = accountRepository.allAccounts
 
     fun update(accounts: AccountEntity) = viewModelScope.launch {
-        repository.update(accounts)
+        accountRepository.update(accounts)
     }
 
     fun delete(accounts: AccountEntity) = viewModelScope.launch {
-        repository.delete(accounts)
+        accountRepository.delete(accounts)
     }
 
-    //Примерно так должен выглядеть метод в
     fun addAccount() {
         val name = accountName.value?.replaceFirstChar { it.titlecase(Locale.getDefault()) }.orEmpty()
         val balance = balance.value?.toDoubleOrNull() ?: 0.0
@@ -37,7 +36,7 @@ class AccountsViewModel(private val repository: AccountRepository) : ViewModel()
 
         val accountEntity = AccountEntity(name, balance, currency)
         viewModelScope.launch {
-            repository.insert(accountEntity)
+            accountRepository.insert(accountEntity)
             _finishEvent.call()
         }
     }
@@ -49,7 +48,7 @@ class AccountsViewModel(private val repository: AccountRepository) : ViewModel()
 
         val accountEntity = AccountEntity(name, balance, currency, idAccountEntity)
         viewModelScope.launch {
-            repository.update(accountEntity)
+            accountRepository.update(accountEntity)
             _finishEvent.call()
         }
     }

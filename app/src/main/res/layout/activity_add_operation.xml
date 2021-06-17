@@ -85,7 +85,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            app:categoriesEntries="@={categoryViewModel.liveDataCategories}"
+            app:categoriesEntries="@{categoryViewModel.liveDataCategories}"
             app:categoriesSpinnerClicks="@={operationsViewModel.categoryPosition}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSelectCategory" />
@@ -110,7 +110,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            app:accountsEntries="@={accountsViewModel.liveDataAccounts}"
+            app:accountsEntries="@{accountsViewModel.liveDataAccounts}"
             app:accountsSpinnerClicks="@={operationsViewModel.accountPosition}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSelectAccount" />

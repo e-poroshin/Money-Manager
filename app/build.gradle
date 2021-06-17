@@ -63,6 +63,7 @@ dependencies {
     implementation 'android.arch.navigation:navigation-ui:1.0.0'
     implementation 'com.android.support:design:30.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    kapt "com.android.databinding:compiler:3.4.0"
 
     // Room components
     implementation "androidx.room:room-ktx:2.3.0"

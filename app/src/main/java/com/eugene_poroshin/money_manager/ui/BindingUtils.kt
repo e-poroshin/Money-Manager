@@ -8,15 +8,17 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
+import com.eugene_poroshin.money_manager.ui.accounts.AccountsAdapter
 
 
-@BindingAdapter("accounts")
-fun setAccounts(view: RecyclerView, accounts: List<AccountEntity>) {
-    //test
-}
+//@BindingAdapter("accounts")
+//fun setAccounts(view: RecyclerView, accounts: List<AccountEntity>) {
+//
+//}
 
 @BindingAdapter("categoriesSpinnerClicksAttrChanged")
 fun onCategoryItemSelect(spinner: Spinner, listener: InverseBindingListener) {

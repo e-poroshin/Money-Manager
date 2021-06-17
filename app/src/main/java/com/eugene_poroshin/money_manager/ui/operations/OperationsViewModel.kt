@@ -53,14 +53,10 @@ class OperationsViewModel(private val operationRepository: OperationRepository) 
         val currentBalance = accounts.value?.get(_accountPosition)?.balance
         val type: OperationType
         if (!_isIncome) {
-            if (currentBalance != null) {
-                newSumAccount?.balance = currentBalance - sum
-            }
+            currentBalance?.let { newSumAccount?.balance = it - sum }
             type = OperationType.EXPENSE
         } else {
-            if (currentBalance != null) {
-                newSumAccount?.balance = currentBalance + sum
-            }
+            currentBalance?.let { newSumAccount?.balance = it + sum }
             type = OperationType.INCOME
         }
 

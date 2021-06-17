@@ -7,19 +7,19 @@ import com.eugene_poroshin.money_manager.repo.CategoryRepository
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
 import kotlinx.coroutines.launch
 
-class CategoryViewModel(private val repository: CategoryRepository) : ViewModel() {
+class CategoryViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
 
-    val liveDataCategories: LiveData<List<CategoryEntity>> = repository.allCategories
+    val liveDataCategories: LiveData<List<CategoryEntity>> = categoryRepository.allCategories
 
     fun insert(category: CategoryEntity) = viewModelScope.launch {
-        repository.insert(category)
+        categoryRepository.insert(category)
     }
 
     fun update(category: CategoryEntity) = viewModelScope.launch {
-        repository.update(category)
+        categoryRepository.update(category)
     }
 
     fun delete(category: CategoryEntity) = viewModelScope.launch {
-        repository.delete(category)
+        categoryRepository.delete(category)
     }
 }
