@@ -8,11 +8,9 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.LiveData
 import com.eugene_poroshin.money_manager.repo.database.AccountEntity
 import com.eugene_poroshin.money_manager.repo.database.CategoryEntity
-import com.eugene_poroshin.money_manager.ui.accounts.AccountsAdapter
 
 
 //@BindingAdapter("accounts")
@@ -65,13 +63,13 @@ fun getAccountSelectedItem(spinner: Spinner) = spinner.selectedItemPosition
 
 
 @BindingAdapter("categoriesEntries")
-fun setCategoriesList(spinner: Spinner, value: List<CategoryEntity>) {
-    spinner.setEntries(value.map { categoryList -> categoryList.name })
+fun setCategoriesList(spinner: Spinner, categoriesLiveData: LiveData<List<CategoryEntity>>) {
+    categoriesLiveData.value?.let { spinner.setEntries(it.map { categoryList -> categoryList.name }) }
 }
 
 @BindingAdapter("accountsEntries")
-fun updateAccountsSpinner(spinner: Spinner, value: List<AccountEntity>) {
-    spinner.setEntries(value.map { accountList -> accountList.name })
+fun setAccountsList(spinner: Spinner, accountsLiveData: LiveData<List<AccountEntity>>) {
+    accountsLiveData.value?.let { spinner.setEntries(it.map { accountList -> accountList.name }) }
 }
 
 private fun Spinner.setEntries(entries: List<String>) {

@@ -5,18 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.eugene_poroshin.money_manager.R
 import com.eugene_poroshin.money_manager.databinding.ActivityAddOperationBinding
+import com.eugene_poroshin.money_manager.ui.accounts.AccountsViewModel
+import com.eugene_poroshin.money_manager.ui.categories.CategoryViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddOperationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddOperationBinding
     private val operationsViewModel: OperationsViewModel by viewModel()
+    private val categoryViewModel: CategoryViewModel by viewModel()
+    private val accountsViewModel: AccountsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_operation)
         binding.lifecycleOwner = this
         binding.operationsViewModel = operationsViewModel
+        binding.categoryViewModel = categoryViewModel
+        binding.accountsViewModel = accountsViewModel
 
         operationsViewModel.finishEvent.observe(this) {
             finish()
